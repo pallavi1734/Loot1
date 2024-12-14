@@ -1,0 +1,12 @@
+pycryptodome
+pycryptodomex
+pywidevine
+PyYAML
+requests
+tqdm
+xmltodict
+yt-dlp
+pyrogram
+ffmpeg-python 
+pytz
+hachoir
