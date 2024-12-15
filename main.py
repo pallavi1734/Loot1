@@ -1054,4 +1054,4 @@ def main():
     print("bot started")
     idle()
     app.stop()
-app.run_until_complete(main())
+app.loop.run_until_complete(main())
