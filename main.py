@@ -271,6 +271,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     
     ydl_opts['allow_unplayable_formats'] = True
     ydl_opts["proxy"] = "http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155"
+    ydl_opts["concurrent_fragments"] = 50
     
     # Save Resolution Choice for every episode
  #   for audio, video in format.items():
