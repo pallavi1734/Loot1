@@ -329,7 +329,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     message.delete()
   #  ms = message.reply_text(f"[+] Downloading {output_name}.mp4")
     ms = status.edit(f"[+] Downloading {output_name}.mp4")
-    
+    ydl_opts["external_downloader] = "aria2c"
         
     print(output)
     print(output_name)
@@ -340,7 +340,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     for dejc in frmts:
       print(dejc)
       dest = "{}.f{}.%(ext)s".format(output,dejc)
-      aria = subprocess.run(f"yt-dlp -f {dejc} -o downloads/temp/{dest} --external-downloader aria2c --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 {link} --allow-unplayable-formats")
+     # aria = subprocess.run(f"yt-dlp -f {dejc} -o downloads/temp/{dest} --external-downloader aria2c --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 {link} --allow-unplayable-formats")
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             # Custom Decryter for DRM Vids
