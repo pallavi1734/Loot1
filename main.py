@@ -271,7 +271,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     
     ydl_opts['allow_unplayable_formats'] = True
     ydl_opts["proxy"] = "http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155"
-    ydl_opts["concurrent_fragments"] = 50
+    
     
     # Save Resolution Choice for every episode
  #   for audio, video in format.items():
@@ -334,8 +334,10 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     print(output_name)
     print(output_dir)
     ydl_opts['outtmpl']['default'] = output_name
-
-    try:
+    frmts = formats.split("+")
+    for dejc in frmts:
+      dest = f"{content_id}{dejc}"
+      try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             # Custom Decryter for DRM Vids
             if has_drm:
@@ -412,7 +414,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                 up = uploader.upload_file(file_path)
             except Exception as e:
                 print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
-    except yt_dlp.utils.DownloadError as e:
+      except yt_dlp.utils.DownloadError as e:
         print(f"[!] Error Downloading Content: {e}")
 
 
