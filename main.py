@@ -1046,11 +1046,12 @@ async def shell(_, message):
         await sendMessage(message, reply)
     else:
         await sendMessage(message, 'No Reply')
-app.start()
-app.add_handler(MessageHandler(shell, filters=command('shell') ))
-app.add_handler(EditedMessageHandler(shell, filters=command('shell') ))
+def main():
+    app.start()
+    app.add_handler(MessageHandler(shell, filters=command('shell') ))
+    app.add_handler(EditedMessageHandler(shell, filters=command('shell') ))
  
-print("bot started")
-idle()
-app.stop()
-
+    print("bot started")
+    idle()
+    app.stop()
+app.run_until_complete(main())
