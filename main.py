@@ -321,6 +321,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
             output_name += '.x265'
         else:
             output_name += '.x264'
+    
     output = f"{output_name}"
     output_name += '.%(ext)s'
     import asyncio
@@ -335,12 +336,10 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     print(output_dir)
     ydl_opts['outtmpl']['default'] = output_name
     frmts = formats.split("+")
+    link = url
     for dejc in frmts:
-      if frmts[0]==dejc:
-        dest = f"{content_id}{dejc}.mp4"
-      else:
-        dest = f"{content_id}{dejc}.m4a"
-      aria = "yt-dlp -f {dejc} -o downloads/temp/{dest} --external-downloader aria2c --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 {link} --allow-unplayable-formats
+      dest = f"{output}.{dejc}.%(ext)s"
+      aria = subprocess.run(f"yt-dlp -f {dejc} -o downloads/temp/{dest} --external-downloader aria2c --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 {link} --allow-unplayable-formats")
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             # Custom Decryter for DRM Vids
