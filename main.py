@@ -364,7 +364,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                             if fmt_id in rid_map:
                                 _data = rid_map[fmt_id]
                                 pssh = _data['pssh']
-                                kid = _data['kid']
+                                kid = _data['kid'].lower()
 
                                 if pssh in pssh_cache:
                                     _data = pssh_cache[pssh]
