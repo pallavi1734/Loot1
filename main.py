@@ -329,7 +329,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     message.delete()
   #  ms = message.reply_text(f"[+] Downloading {output_name}.mp4")
     ms = status.edit(f"[+] Downloading {output_name}.mp4")
-    ydl_opts["external_downloader] = "aria2c"
+    ydl_opts["external_downloader"] = "aria2c"
         
     print(output)
     print(output_name)
