@@ -268,8 +268,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         ydl_opts["allow_multiple_audio_streams"] = True
         ydl_opts["allow_multiple_video_streams"] = True
     # yt-dlp can't download or merge if DRM is present
-    
-    ydl_opts['allow_unplayable_formats'] = True
+    if has_drm:
+        ydl_opts['allow_unplayable_formats'] = True
     ydl_opts["proxy"] = "http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155"
     
     
