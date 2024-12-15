@@ -98,7 +98,7 @@ def extractyt(url,ci):
     except Exception:
         pass
     import json
-    subprocess.run(f"yt-dlp --allow-unplayable-formats --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
+    subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
     import json
     with open(f'info{ci}.json', 'r') as f:
         data = json.load(f)
