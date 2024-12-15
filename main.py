@@ -336,8 +336,12 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     ydl_opts['outtmpl']['default'] = output_name
     frmts = formats.split("+")
     for dejc in frmts:
-      dest = f"{content_id}{dejc}"
-      try:
+      if frmts[0]==dejc:
+        dest = f"{content_id}{dejc}.mp4"
+      else:
+        dest = f"{content_id}{dejc}.m4a"
+      aria = "yt-dlp -f {dejc} -o downloads/temp/{dest} --external-downloader aria2c --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 {link} --allow-unplayable-formats
+    try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             # Custom Decryter for DRM Vids
             if has_drm:
@@ -414,7 +418,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                 up = uploader.upload_file(file_path)
             except Exception as e:
                 print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
-      except yt_dlp.utils.DownloadError as e:
+    except yt_dlp.utils.DownloadError as e:
         print(f"[!] Error Downloading Content: {e}")
 
 
