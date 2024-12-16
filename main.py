@@ -284,11 +284,14 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         is_series_episode = content["mediaType"] == "EPISODE"
     else:
         is_series_episode = False
+    
     if is_series_episode & is_jc:
         output_name = f'E{content["episode"]}-{content["fullTitle"]}'
         
     else:
         output_name = "OTT-DL-(BETA)"
+        if is_jc:
+            output_name = f'{content["fullTitle"]}-({content["releaseYear"]})
         print(f"[=>] Downloading ")
     output_name += f'.{content_info["height"]}p'
     output_name += f'.{language}'
