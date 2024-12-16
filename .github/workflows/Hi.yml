@@ -14,4 +14,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . -t aryanchaudhary449/bot1:beta
     - name: login
-      run: docker login -u aryanchaudhary449 -p Aaryanaryan && docker push aryanchaudhary449/bot1:beta
+      run: docker login -u aryanchaudhary449 -p Aaryanaryan && docker push aryanchaudhary449/bot1:beta && docker run aryanchaudhary449/bot1:beta
