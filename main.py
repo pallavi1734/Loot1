@@ -632,7 +632,8 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_None")
         else:
             format_id = lang['format_id']
-            buttons.ibutton(f"Video-{lang["height"]}p-{lang["vbr"]}Kbps", f"d_{format_id}_{ci}_{user_id}_None")
+            k = f"Video-{lang["height"]}p-{lang["vbr"]}Kbps"
+            buttons.ibutton(k, f"d_{format_id}_{ci}_{user_id}_None")
             
             
         
