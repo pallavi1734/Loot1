@@ -220,15 +220,18 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     parsed_url = parse.urlparse(url)
     base_url = url.replace(parsed_url.query, '')[:-1]
     query_head = parsed_url.query.replace("=", ":", 1).split(":")
+    print(query_head)
+    print(base_url)
     def speedmeter(d):
         if d['status'] == 'downloading':
             percentage_str = d['_percent_str']
             status.edit(f"Download Progress: {percentage_str}")
     # Add more Headers
-    ydl_headers = {
-        query_head[0]: query_head[1]
-    }
-    ydl_headers.update(jiocine.headers)
+    if is_jc:
+      ydl_headers = {
+          query_head[0]: query_head[1]
+      }
+      ydl_headers.update(jiocine.headers)
 
     ydl_opts = {
         'no_warnings': True,
@@ -236,8 +239,10 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         'paths': {
             'temp': temp_dir,
         },
-        'http_headers': ydl_headers,
+        
     }
+    if is_jc:
+        ydl_opts['http_headers'] = ydl_headers
     if os.path.exists(f"{ci}.json"):
         with open(f"{ci}.json",'r') as f:
             drm = json.load(f)
@@ -679,7 +684,10 @@ def download_button(_, callback_query):
         url = datajc['url']
         message = app.send_message(callback_query.message.chat.id, f'Processing') 
         callback_query.message.delete() 
-        download_vod_ytdlp(url, message, ci,user_id=user_id) 
+        if int(ci) == 1:
+            download_vod_ytdlp(url, message, ci,user_id=user_id,is_jc=False) 
+        else:
+            download_vod_ytdlp(url, message, ci,user_id=user_id) 
         return
     elif data == "selected":
         callback_query.answer("Can't Select Again Try Reload # Created By Aryan Chaudhary")
