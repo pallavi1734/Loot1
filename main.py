@@ -834,7 +834,8 @@ def jiodl(client, message):
     #     print("[!] Enter Valid Id")
     #     exit(0)
 
-    content_url = (message.text[1:][1:][1:]).split(" -")[0]# input(f'[?] Enter Content Url: ')
+    content_url = (message.text[1:][1:][1:][1:]).split(" -")[0]# input(f'[?] Enter Content Url: ')
+    url = content_url
     if len(content_url) < 1:
         print("[!] Enter Valid Url")
  #       exit(0)
@@ -865,7 +866,14 @@ def jiodl(client, message):
 #    m = message.reply_text("Processing")
     print('[=>] Fetching Content Details')
     # content_id = 3216132  # 3760812  # 4K Test: 3719559
-    content_data = jiocine.getContentDetails(content_id)
+    try:
+        content_data = jiocine.getContentDetails(content_id)
+    except Exception as e:
+        m.edit("Trying Other Ott Dl Beta Phase in 2 Secs")
+        message = m
+        hello = youtube_link(url, message, 1, user_id=user_id)
+        print(hello)
+        return
     if not content_data:
         m.edit("[X] Content Details Not Found!")
     #    exit(0)
