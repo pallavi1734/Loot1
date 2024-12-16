@@ -113,16 +113,7 @@ app = Client(
     api_hash="4631f40a1b26c2759bf1be4aff1df710",
     sleep_threshold=30
 )
-@app.on_message(filters.chat(sudo_users) & filters.command("reset"))
-def reset(client, message):
-    config.set("authToken","")
-    message.reply_text("Done")
-@app.on_message(filters.chat(sudo_users) & filters.command("fetch"))
-def resety(client, message):
-    import requests
-    Token = requests.get("https://hls-proxifier-sage.vercel.app/jiotoken").json()['token']
-    config.set("authToken",Token)
-    message.reply_text("Done")
+
 # Check Multi lang support
 def multi_lang(_content_data, message):
     if "assetsByLanguage" in _content_data and len(_content_data["assetsByLanguage"]) > 0:
@@ -402,6 +393,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
             ydl.download([base_url])
             
             file_path = ydl.prepare_filename(content_info)
+            config.set("authToken","")
             try:
                 from tg import tgUploader
                 uploader = tgUploader(app, ms, ms.chat.id)
@@ -1042,7 +1034,16 @@ from io import BytesIO
 
 
 
-
+@app.on_message(filters.chat(sudo_users) & filters.command("reset"))
+def reset(client, message):
+    config.set("authToken","")
+    message.reply_text("Done")
+@app.on_message(filters.chat(sudo_users) & filters.command("fetch"))
+def resety(client, message):
+    import requests
+    Token = requests.get("https://hls-proxifier-sage.vercel.app/jiotoken").json()['token']
+    config.set("authToken",Token)
+    message.reply_text("Done")
 
 async def shell(_, message):
     cmd = message.text.split(maxsplit=1)
