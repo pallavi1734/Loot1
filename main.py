@@ -216,6 +216,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     language = datajc['language']
     
     print(is_multi)
+    content = jiocine.getContentDetails(content_id)
     
 
     # Output dir path
@@ -278,11 +279,15 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     except yt_dlp.utils.DownloadError as e:
         print(f"[!] Error Fetching Content Info: {e}")
         return
-    
+    if is_jc:
+        is_series_episode
+    else:
+        is_series_episode = False
     if is_series_episode & is_jc:
         output_name = f'E{content["episode"]}-{content["fullTitle"]}'
         
     else:
+        output_name = "OTT-DL-(BETA)"
         print(f"[=>] Downloading ")
     output_name += f'.{content_info["height"]}p'
     output_name += f'.{language}'
@@ -622,11 +627,11 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         if lang['resolution'] == "audio only":
             langu = lang['language']
             format = lang['format_id']
-            key = format
+            key = f"Audio - {langu}"
             buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_None")
         else:
             format_id = lang['format_id']
-            buttons.ibutton(f"{format_id}", f"d_{format_id}_{ci}_{user_id}_None")
+            buttons.ibutton(f"Video-{lang["height"]}p-{lang["vbr"]}Kbps", f"d_{format_id}_{ci}_{user_id}_None")
             
             
         
