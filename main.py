@@ -330,13 +330,11 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         
     print(output)
     print(output_name)
-    print(output_dir)
+    
     ydl_opts['outtmpl']['default'] = output_name
     frmts = formats.split("+")
     link = url
-    for dejc in frmts:
-      print(dejc)
-      dest = "{}.f{}.%(ext)s".format(output,dejc)
+    
      # aria = subprocess.run(f"yt-dlp -f {dejc} -o downloads/temp/{dest} --external-downloader aria2c --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 {link} --allow-unplayable-formats")
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
