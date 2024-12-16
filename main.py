@@ -1039,7 +1039,27 @@ from pyrogram.handlers import MessageHandler, EditedMessageHandler
 from pyrogram.filters import command
 from io import BytesIO
 
-
+import os
+import time
+import sys
+from asyncio import create_subprocess_exec, gather, run as asyrun
+@app.on_message(filters.chat(sudo_users) & filters.command("restart"))
+async def restart(client, message):
+    # Check if the message is from the owner
+    if 2<3:
+        restart_message = await message.reply_text('RESTARTING')
+        # Send a confirmation message to the owner
+        
+        proc1 = await create_subprocess_exec('pkill', '-9', '-f', 'ffmpeg|gunicorn')
+        proc2 = await create_subprocess_exec('python3', 'update.py')
+        await gather(proc1.wait(), proc2.wait())
+      #  async with aiopen(".restartmsg", "w") as f:
+          #  await f.write(f"{restart_message.chat.id}\n{restart_message.id}\n")
+        # Restart the bot
+        os.execl(sys.executable, sys.executable, "main.py")
+        
+    else:
+        await message.reply("You're not authorized to restart the bot!")
 
 @app.on_message(filters.chat(sudo_users) & filters.command("reset"))
 def reset(client, message):
