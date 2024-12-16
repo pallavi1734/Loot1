@@ -200,7 +200,7 @@ def merge_vod_ffmpeg(in_video, in_audio, output_path):
 
 
 # Use yt-dlp to download vod(video on demand) as m3u8 or dash streams into a video file
-def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_drm=False, rid_map=None):
+def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_drm=False, rid_map=None,is_jc=True):
     global default_res
     status = app.send_message(message.chat.id, f"[+] Downloading")
     ci = content_id
@@ -214,19 +214,12 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     url = datajc['url']
     formats = datajc['formats']
     language = datajc['language']
-    content = jiocine.getContentDetails(content_id)
+    
     print(is_multi)
-    # Conversion Map for Type to Sub Folder
-    sub_dir = jiocine.contentTypeDir[content["mediaType"]]
-    output_dir_name = f'{content["fullTitle"]} ({content["releaseYear"]})'
-
-    is_series_episode = content["mediaType"] == "EPISODE"
-    if is_series_episode:
-        output_dir_name = f'{content["seasonName"]} ({content["releaseYear"]})'
+    
 
     # Output dir path
-    output_dir = config.get('downloadPath').format(sub_dir, output_dir_name)
-    output_dir = realPath(joinPath(scriptsDir, output_dir))
+    
     temp_dir = realPath(joinPath(scriptsDir, config.get('tempPath')))
     ffmpegPath = realPath(joinPath(scriptsDir, config.get('ffmpegPath')))
     
@@ -249,9 +242,6 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         'nocheckcertificate': True,
         'paths': {
             'temp': temp_dir,
-        },
-        'outtmpl': {
-            'default': f'{output_dir_name}.%(ext)s',
         },
         'http_headers': ydl_headers,
     }
@@ -288,12 +278,12 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     except yt_dlp.utils.DownloadError as e:
         print(f"[!] Error Fetching Content Info: {e}")
         return
-    output_name = output_dir_name.replace(" ", "_")
-    if is_series_episode:
+    
+    if is_series_episode & is_jc:
         output_name = f'E{content["episode"]}-{content["fullTitle"]}'
-        print(f'[=>] Downloading S{content["season"]}E{content["episode"]} {content["fullTitle"]}')
+        
     else:
-        print(f"[=>] Downloading {output_dir_name}")
+        print(f"[=>] Downloading ")
     output_name += f'.{content_info["height"]}p'
     output_name += f'.{language}'
     output_name += '.WEB-DL-JC'
