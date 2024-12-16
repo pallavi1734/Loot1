@@ -280,7 +280,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         print(f"[!] Error Fetching Content Info: {e}")
         return
     if is_jc:
-        is_series_episode
+        is_series_episode = content["mediaType"] == "EPISODE"
     else:
         is_series_episode = False
     if is_series_episode & is_jc:
