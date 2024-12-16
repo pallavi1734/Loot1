@@ -632,7 +632,10 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_None")
         else:
             format_id = lang['format_id']
-            k = f"Video-{lang["height"]}p-{lang["vbr"]}Kbps"
+            he = lange["height"]
+            vbr = lange["vbr"]
+            k = f"Video-{he}p-{vbr}Kbps"
+         #   k = f"Video-{lang["height"]}p-{lang["vbr"]}Kbps"
             buttons.ibutton(k, f"d_{format_id}_{ci}_{user_id}_None")
             
             
@@ -675,6 +678,7 @@ def download_button(_, callback_query):
     	    os.remove(f'format{ci}{user_id}.json')
         except Exception:
             pass
+        callback_query.message.delete()
         return
     elif data == "done":
         with open(f"{user_id}.json",'r') as f: 
@@ -734,7 +738,9 @@ def download_button(_, callback_query):
                     buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_{langu}")
             else:
                 format_id = lange['format_id']
-                key = f"Video-{lange["height"]}-{lange["vbr"]}Kbps"
+                he = lange["height"]
+                vbr = lange["vbr"]
+                key = f"Video-{he}p-{vbr}Kbps"
                 for keys in formatsa:
                     if format_id == keys:
                         key = f"{key}✅"
@@ -789,7 +795,10 @@ def download_button(_, callback_query):
                     buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_{langu}")
             else:
                 format_id = lange['format_id']
-                key = f"Video-{lange["height"]}-{lange["vbr"]}Kbps"
+                he = lange["height"]
+                vbr = lange["vbr"]
+                key = f"Video-{he}p-{vbr}Kbps"
+                
                 for keys in formatsa:
                     if format_id == keys:
                         key = f"{key}✅"
