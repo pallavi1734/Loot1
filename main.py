@@ -727,9 +727,9 @@ def download_button(_, callback_query):
             if lange['resolution'] == "audio only":
                 langu = lange['language']
                 format = lange['format_id']
-                key = format
+                key = f"Audio - {langu}"
                 for keys in formatsa:
-                    if key == keys:
+                    if format == keys:
                         key = f"{key}✅"
                 if key.endswith("✅"):
                     buttons.ibutton(f"{key}", f"d_selected_{ci}_{user_id}_{langu}")
@@ -737,9 +737,9 @@ def download_button(_, callback_query):
                     buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_{langu}")
             else:
                 format_id = lange['format_id']
-                key = format_id
+                key = f"Video-{lange["height"]}-{lange["vbr"]}Kbps"
                 for keys in formatsa:
-                    if key == keys:
+                    if format_id == keys:
                         key = f"{key}✅"
                 if key.endswith("✅"):
                     buttons.ibutton(f"{key}", f"d_selected_{ci}_{user_id}_None")
@@ -750,7 +750,7 @@ def download_button(_, callback_query):
         buttons.ibutton("Cancel", f"d_cancel_{ci}_{user_id}_None")
         buttons.ibutton("Reload 🔃", f"d_reload_{ci}_{user_id}_None")
         buttons.ibutton("Done", f"d_done_{ci}_{user_id}_None")
-        reply_markup = buttons.build_menu(2)
+        reply_markup = buttons.build_menu(1)
         app.edit_message_reply_markup(message.chat.id, message.id, reply_markup)
         return
     
@@ -782,9 +782,9 @@ def download_button(_, callback_query):
             if lange['resolution'] == "audio only":
                 langu = lange['language']
                 format = lange['format_id']
-                key = format
+                key = f"Audio - {langu}"
                 for keys in formatsa:
-                    if key == keys:
+                    if format == keys:
                         key = f"{key}✅"
                 if key.endswith("✅"):
                     buttons.ibutton(f"{key}", f"d_selected_{ci}_{user_id}_{langu}")
@@ -792,9 +792,9 @@ def download_button(_, callback_query):
                     buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_{langu}")
             else:
                 format_id = lange['format_id']
-                key = format_id
+                key = f"Video-{lange["height"]}-{lange["vbr"]}Kbps"
                 for keys in formatsa:
-                    if key == keys:
+                    if format_id == keys:
                         key = f"{key}✅"
                 if key.endswith("✅"):
                     buttons.ibutton(f"{key}", f"d_selected_{ci}_{user_id}_None")
