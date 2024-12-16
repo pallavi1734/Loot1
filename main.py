@@ -209,7 +209,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     print(is_multi)
     if is_jc:
         content = jiocine.getContentDetails(content_id)
-    
+    base_url = url
 
     # Output dir path
     
