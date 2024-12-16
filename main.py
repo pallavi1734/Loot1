@@ -216,7 +216,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     language = datajc['language']
     
     print(is_multi)
-    content = jiocine.getContentDetails(content_id)
+    if is_jc:
+        content = jiocine.getContentDetails(content_id)
     
 
     # Output dir path
