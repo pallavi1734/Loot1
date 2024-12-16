@@ -215,13 +215,12 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     
     temp_dir = realPath(joinPath(scriptsDir, config.get('tempPath')))
     ffmpegPath = realPath(joinPath(scriptsDir, config.get('ffmpegPath')))
-    
+    if is_jc:
     # Separate out baseUrl and Query
-    parsed_url = parse.urlparse(url)
-    base_url = url.replace(parsed_url.query, '')[:-1]
-    query_head = parsed_url.query.replace("=", ":", 1).split(":")
-    print(query_head)
-    print(base_url)
+        parsed_url = parse.urlparse(url)
+        base_url = url.replace(parsed_url.query, '')[:-1]
+        query_head = parsed_url.query.replace("=", ":", 1).split(":")
+    
     def speedmeter(d):
         if d['status'] == 'downloading':
             percentage_str = d['_percent_str']
