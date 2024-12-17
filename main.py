@@ -93,14 +93,18 @@ class ButtonMaker:
         return InlineKeyboardMarkup(menu)
 
 
-def extractyt(url=None,ci=None,is_dngplay=False):
+def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False):
     try:
         os.remove(f"info{ci}.json")
     except Exception:
         pass
+    token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
     import json
     if is_dngplay:
         subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p 47c906778850df6957712a3bfd24c276 --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
+    elif is_sliv:
+        
+        subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p {token} --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
     else:
         subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
     import json
@@ -285,6 +289,12 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         
     else:
         output_name = "OTT-DL-(BETA)"
+        if(any(pattern in url for pattern in ["www.sonyliv.com", "sonyliv.com", "sonyliv", "https://www.sonyliv.com"])):
+            is_sliv=True 
+            ydl_opts['username']='token'
+            ydl_opts['password']=
+        else:
+            is_sliv=False
         if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
             
             ydl_opts['username']='token'
@@ -614,6 +624,11 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         is_dngplay=True 
     else:
         is_dngplay=False
+
+    if(any(pattern in url for pattern in ["www.sonyliv.com", "sonyliv.com", "sonyliv", "https://www.sonyliv.com"])):
+        is_sliv=True 
+    else:
+        is_sliv=False
     if 2<3:
         keys = {"rid_map":rid_map,"has_drm":has_drm,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
         with open(f"{user_id}.json",'w') as f:
@@ -624,7 +639,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         message = app.send_message(message.chat.id, f'Processing')
         download_vod_ytdlp(url, message, ci, user_id, is_multi=is_multi)
         return "se"	
-    data = extractyt(url=url,ci=ci,is_dngplay=is_dngplay)
+    data = extractyt(url=url,ci=ci,is_dngplay=is_dngplay,is_sliv=is_sliv)
    
     keyboard = []
     buttons = ButtonMaker()
