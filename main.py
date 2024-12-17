@@ -290,8 +290,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     else:
         output_name = "OTT-DL-(BETA)"
         if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
-            ydl_opts["username"] = "token"
-            ydl_opts["password"] = "47c906778850df6957712a3bfd24c276"
+            
+            ydl_opts['format'] = f"-u token -p 47c906778850df6957712a3bfd24c276 {formats}"
             output_name = url.split("/")[-1]
         if is_jc:
             output_name = f'{content["fullTitle"]}-({content["releaseYear"]})'
