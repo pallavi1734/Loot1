@@ -1,5 +1,6 @@
-import json
 #Jio Cinema Downloader Bot Created By Aryan Chaudhary
+#Ott Downloader Bot Created By Aryan Chaudhary @aryanchy451
+import json
 import re
 import requests
 import utils
@@ -92,13 +93,16 @@ class ButtonMaker:
         return InlineKeyboardMarkup(menu)
 
 
-def extractyt(url,ci):
+def extractyt(url=None,ci=None,is_dngplay=False):
     try:
         os.remove(f"info{ci}.json")
     except Exception:
         pass
     import json
-    subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
+    if is_dngplay:
+        subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p 47c906778850df6957712a3bfd24c276 --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
+    else:
+        subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
     import json
     with open(f'info{ci}.json', 'r') as f:
         data = json.load(f)
@@ -285,10 +289,15 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         
     else:
         output_name = "OTT-DL-(BETA)"
+        if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
+            output_name = url.split("/")[-1]
         if is_jc:
             output_name = f'{content["fullTitle"]}-({content["releaseYear"]})'
         print(f"[=>] Downloading ")
-    output_name += f'.{content_info["height"]}p'
+    try:
+        output_name += f'.{content_info["height"]}p'
+    except Exception:
+        pass
     output_name += f'.{language}'
     output_name += '.WEB-DL-JC'
     output_name += "@aryanchy451"
@@ -597,7 +606,10 @@ def start_command(client, message):
 #@app.on_message. 
 def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm=False,rid_map=None,user_id=0):
     import json
-    
+    if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
+        is_dngplay=True 
+    else:
+        is_dngplay=False
     if 2<3:
         keys = {"rid_map":rid_map,"has_drm":has_drm,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
         with open(f"{user_id}.json",'w') as f:
@@ -608,7 +620,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         message = app.send_message(message.chat.id, f'Processing')
         download_vod_ytdlp(url, message, ci, user_id, is_multi=is_multi)
         return "se"	
-    data = extractyt(url,ci)
+    data = extractyt(url=url,ci=ci,is_dngplay=is_dngplay)
    
     keyboard = []
     buttons = ButtonMaker()
@@ -824,7 +836,9 @@ def download_button(_, callback_query):
 def jiodl(client, message):
 
     user_id = message.from_user.id
-    print('[=>] Jio Cinema Downloader Starting')
+    print('[=>] OTT Downloader Starting Created By Aryan Chaudhary')
+    import logging
+    logging.info('[=>] OTT Downloader Starting Created By Aryan Chaudhary')
 
     # Fetch Guest token when Not using Account token
     if not config.get("authToken") and not config.get("useAccount"):
