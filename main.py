@@ -885,7 +885,11 @@ def jiodl(client, message):
         print(hello)
         return
     if not content_data:
-        m.edit("[X] Content Details Not Found!")
+        m.edit("Trying Other Ott Dl Beta Phase in 2 Secs")
+        message = m
+        hello = youtube_link(url, message, 1, user_id=user_id)
+        print(hello)
+        return
     #    exit(0)
 
  #   m.edit('[+] Found Video Details')
