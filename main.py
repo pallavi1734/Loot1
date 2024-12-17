@@ -274,11 +274,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
 #    	for audio, video in format.items():
         	ydl_opts['format'] = f"bv*+mergeall[vcodec=none]"
     # Update output name
-    try:
-        content_info = yt_dlp.YoutubeDL(ydl_opts).extract_info(base_url, download=False)
-    except yt_dlp.utils.DownloadError as e:
-        print(f"[!] Error Fetching Content Info: {e}")
-        return
+    
     if is_jc:
         is_series_episode = content["mediaType"] == "EPISODE"
     else:
@@ -291,11 +287,17 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         output_name = "OTT-DL-(BETA)"
         if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
             
-            ydl_opts['format'] = f"-u token -p 47c906778850df6957712a3bfd24c276 {formats}"
+            ydl_opts['username']='token'
+            ydl_opts['password']='47c906778850df6957712a3bfd24c276'
             output_name = url.split("/")[-1]
         if is_jc:
             output_name = f'{content["fullTitle"]}-({content["releaseYear"]})'
         print(f"[=>] Downloading ")
+    try:
+        content_info = yt_dlp.YoutubeDL(ydl_opts).extract_info(base_url, download=False)
+    except yt_dlp.utils.DownloadError as e:
+        print(f"[!] Error Fetching Content Info: {e}")
+        return
     try:
         output_name += f'.{content_info["height"]}p'
     except Exception:
