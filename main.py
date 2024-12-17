@@ -100,7 +100,7 @@ def extractyt(url=None,ci=None,is_dngplay=False):
         pass
     import json
     if is_dngplay:
-        subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p 47c906778850df6957712a3bfd24c276 --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
+        subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
     else:
         subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 --dump-json {url} > info{ci}.json",shell=True)
     import json
@@ -287,8 +287,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         output_name = "OTT-DL-(BETA)"
         if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
             
-            ydl_opts['username']='token'
-            ydl_opts['password']='47c906778850df6957712a3bfd24c276'
+            
             output_name = url.split("/")[-1]
         if is_jc:
             output_name = f'{content["fullTitle"]}-({content["releaseYear"]})'
