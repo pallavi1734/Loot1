@@ -264,9 +264,12 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         ydl_opts["allow_multiple_audio_streams"] = True
         ydl_opts["allow_multiple_video_streams"] = True
     # yt-dlp can't download or merge if DRM is present
+    if is_jc:
+        is_series_episode = content["mediaType"] == "EPISODE"
+    else:
+        is_series_episode = False
     if has_drm:
         ydl_opts['allow_unplayable_formats'] = True
-
     else:
         if is_series_episode:
             base_url = f"https://www.jiocinema.com/tv-shows/h/1/h/{ci}"
@@ -287,10 +290,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         	ydl_opts['format'] = f"bv*+mergeall[vcodec=none]"
     # Update output name
     
-    if is_jc:
-        is_series_episode = content["mediaType"] == "EPISODE"
-    else:
-        is_series_episode = False
+    
     
     if is_series_episode & is_jc:
         output_name = f'E{content["episode"]}-{content["fullTitle"]}'
