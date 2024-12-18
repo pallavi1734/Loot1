@@ -227,6 +227,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     # Separate out baseUrl and Query
         parsed_url = parse.urlparse(url)
         base_url = url.replace(parsed_url.query, '')[:-1]
+        
         query_head = parsed_url.query.replace("=", ":", 1).split(":")
     
     def speedmeter(d):
@@ -265,6 +266,13 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     # yt-dlp can't download or merge if DRM is present
     if has_drm:
         ydl_opts['allow_unplayable_formats'] = True
+
+    else:
+        if is_series_episode:
+            base_url = f"https://www.jiocinema.com/tv-shows/h/1/h/{ci}"
+
+        else:
+            base_url = f"https://www.jiocinema.com/movies/h/{ci}"
     ydl_opts["proxy"] = "http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155"
     ydl_opts["no_check_certificate"] = True
     
