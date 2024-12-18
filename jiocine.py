@@ -5,7 +5,7 @@ import xmltodict
 session = requests.Session()
 #session.proxies.update({'http':'http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155'})
 session.proxies.update({'http':'http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155'})
-proxy = {'http':'http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155','https':"http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155"}
+proxy = {'http':'http://bobprakash4646:ivR8gSbjLN@103.167.32.221:49155','https':"http://bobprakash4646:ivR8gSbjLN@103.167.32.221:49155"}
 # Common Headers for Session
 headers = {
     "Origin": "https://www.jiocinema.com",
