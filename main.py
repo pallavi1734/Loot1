@@ -631,15 +631,20 @@ def start_command(client, message):
 #@app.on_message. 
 def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm=False,rid_map=None,user_id=0):
     import json
+    
     if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
         is_dngplay=True 
+        is_jc = False
     else:
         is_dngplay=False
+        is_jc = True
 
     if(any(pattern in url for pattern in ["www.sonyliv.com", "sonyliv.com", "sonyliv", "https://www.sonyliv.com"])):
         is_sliv=True 
+        is_jc = False
     else:
         is_sliv=False
+        is_jc = True
     if 2<3:
         keys = {"rid_map":rid_map,"has_drm":has_drm,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
         with open(f"{user_id}.json",'w') as f:
@@ -650,6 +655,21 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         message = app.send_message(message.chat.id, f'Processing')
         download_vod_ytdlp(url, message, ci, user_id, is_multi=is_multi)
         return "se"	
+    if is_jc:
+        content = jiocine.getContentDetails(ci)
+        if is_jc:
+            is_series_episode = content["mediaType"] == "EPISODE"
+        else:
+            is_series_episode = False
+        pattern = re.compile(r'widevine', re.IGNORECASE)
+        if pattern.search(url) is not None:
+            if is_series_episode:
+                url = f"https://www.jiocinema.com/tv-shows/h/1/h/{ci}"
+            else:
+                url = f"https://www.jiocinema.com/movies/h/{ci}"
+
+        else:
+            pass
     data = extractyt(url=url,ci=ci,is_dngplay=is_dngplay,is_sliv=is_sliv)
    
     keyboard = []
