@@ -673,8 +673,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                 url = f"https://www.jiocinema.com/movies/h/{ci}"
                 print(url)
 
-        else:
-            pass
+        
     data = extractyt(url=url,ci=ci,is_dngplay=is_dngplay,is_sliv=is_sliv)
    
     keyboard = []
