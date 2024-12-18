@@ -634,17 +634,20 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
     
     if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
         is_dngplay=True 
-        is_jc = False
+        
     else:
         is_dngplay=False
-        is_jc = True
-
+        
+    if(any(pattern in url for pattern in ["www.jiocinema.com", "jiocinema.com", "jiocinema", "https://www.jiocinema.com"])):
+        is_jc=True 
+    else:
+        is_jc = False
     if(any(pattern in url for pattern in ["www.sonyliv.com", "sonyliv.com", "sonyliv", "https://www.sonyliv.com"])):
         is_sliv=True 
-        is_jc = False
+        
     else:
         is_sliv=False
-        is_jc = True
+        
     if 2<3:
         keys = {"rid_map":rid_map,"has_drm":has_drm,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
         with open(f"{user_id}.json",'w') as f:
@@ -949,6 +952,7 @@ def jiodl(client, message):
         content_id = content_url[-1]
     except:
         print("Please Provide Valid URL!!")
+        content_id = 1
    #     exit(0)
 #    m = message.reply_text("Processing")
     print('[=>] Fetching Content Details')
@@ -991,8 +995,10 @@ def jiodl(client, message):
       #  exit(0)
 
     # There may be other languages
-    lang_data = multi_lang(content_data, message)
-    if lang_data and content_data != lang_data['assetsId']:
+    lang_data = {}
+    lang_data['assetsId'] = content_id
+    
+    if lang_data and content_id!= lang_data['assetsId']:
         print('[=>] Language Changed!')
         print(f'[*] Id: {lang_data["id"]}')
         m.edit(f'[+] Language: {lang_data["name"]}')
