@@ -11,4 +11,5 @@
 ### Notes
 - This project is purely for the educational purpose
 - Please don't use this project for pirating any content online
-- This is NOT affiliated or approved by JioCinema/Jio/Viacom18
+- This is NOT affiliated or approved by Any Ott Platform
+- I Made This For Educational Purposes Please Share With Credits Aryan Chaudhary @aryanchy451
