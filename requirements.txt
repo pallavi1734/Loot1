@@ -1,3 +1,4 @@
+tgcrypto
 pycryptodome
 pycryptodomex
 pywidevine
