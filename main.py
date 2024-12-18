@@ -657,16 +657,21 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         return "se"	
     if is_jc:
         content = jiocine.getContentDetails(ci)
+        print("nice")
         if is_jc:
             is_series_episode = content["mediaType"] == "EPISODE"
         else:
             is_series_episode = False
-        pattern = re.compile(r'widevine', re.IGNORECASE)
-        if pattern.search(url) is not None:
+        
+        if(any(pattern in url for pattern in ["dash", "widevine"])):
+            pass
+        else:
             if is_series_episode:
                 url = f"https://www.jiocinema.com/tv-shows/h/1/h/{ci}"
+                print(url)
             else:
                 url = f"https://www.jiocinema.com/movies/h/{ci}"
+                print(url)
 
         else:
             pass
