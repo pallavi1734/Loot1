@@ -663,7 +663,10 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_None")
         else:
             format_id = lang['format_id']
-            he = lang["height"]
+            try:
+              he = lang["height"]
+            except Exception:
+              he = format_id
             vbr = lang["vbr"]
             k = f"Video-{he}p-{vbr}Kbps"
          #   k = f"Video-{lang["height"]}p-{lang["vbr"]}Kbps"
@@ -772,7 +775,10 @@ def download_button(_, callback_query):
                     buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_{langu}")
             else:
                 format_id = lange['format_id']
-                he = lange["height"]
+                try:
+                  he = lang["height"]
+                except Exception:
+                  he = format_id
                 vbr = lange["vbr"]
                 key = f"Video-{he}p-{vbr}Kbps"
                 for keys in formatsa:
@@ -829,7 +835,10 @@ def download_button(_, callback_query):
                     buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_{langu}")
             else:
                 format_id = lange['format_id']
-                he = lange["height"]
+                try:
+                  he = lang["height"]
+                except Exception:
+                  he = format_id
                 vbr = lange["vbr"]
                 key = f"Video-{he}p-{vbr}Kbps"
                 
