@@ -271,6 +271,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     if has_drm:
         ydl_opts['allow_unplayable_formats'] = True
     elif content['isPremium'] or (any(pattern in base_url for pattern in ["widevine"])):
+        print("premium pass")
         pass
     else:
         if is_series_episode:
@@ -314,9 +315,11 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
             print("Dangal Play")
             ydl_opts['password']='47c906778850df6957712a3bfd24c276'
             ydl_opts['proxy'] = ""
+            print("proxy Removed")
             output_name = url.split("/")[-1]
         if is_jc:
             output_name = f'{content["fullTitle"]}-({content["releaseYear"]})'
+            print("is_jc")
         print(f"[=>] Downloading ")
     
     
