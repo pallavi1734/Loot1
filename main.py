@@ -270,6 +270,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         is_series_episode = False
     if has_drm:
         ydl_opts['allow_unplayable_formats'] = True
+    elif content['isPremium'] or (any(pattern in base_url for pattern in ["widevine"])):
+        pass
     else:
         if is_series_episode:
             base_url = f"https://www.jiocinema.com/tv-shows/h/1/h/{ci}"
