@@ -345,7 +345,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     print(output)
     print(output_name)
     
-    ydl_opts['outtmpl']['default'] = output_name
+    ydl_opts['outtmpl'] = output_name
     frmts = formats.split("+")
     link = url
     
