@@ -323,7 +323,15 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         print(f"[=>] Downloading ")
     
     
-    output_name += "1080p"
+    try:
+        content_info = yt_dlp.YoutubeDL(ydl_opts).extract_info(base_url, download=False)
+    except yt_dlp.utils.DownloadError as e:
+        print(f"[!] Error Fetching Content Info: {e}")
+        return
+    try:
+        output_name += f'.{content_info["height"]}p'
+    except Exception:
+        pass
     output_name += f'.{language}'
     output_name += '.WEB-DL-JC'
     output_name += "@aryanchy451"
