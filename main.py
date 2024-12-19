@@ -311,48 +311,24 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
             
             ydl_opts['username']='token'
+            print("Dangal Play")
             ydl_opts['password']='47c906778850df6957712a3bfd24c276'
             ydl_opts['proxy'] = ""
             output_name = url.split("/")[-1]
         if is_jc:
             output_name = f'{content["fullTitle"]}-({content["releaseYear"]})'
         print(f"[=>] Downloading ")
-    try:
-        content_info = yt_dlp.YoutubeDL(ydl_opts).extract_info(base_url, download=False)
-    except yt_dlp.utils.DownloadError as e:
-        print(f"[!] Error Fetching Content Info: {e}")
-        return
-    try:
-        output_name += f'.{content_info["height"]}p'
-    except Exception:
-        pass
+    
+    
+    output_name += "1080p"
     output_name += f'.{language}'
     output_name += '.WEB-DL-JC'
     output_name += "@aryanchy451"
     
 
     # Audio Codec
-    if 'acodec' in content_info:
-        acodec = content_info['acodec']
-        if acodec and acodec in jiocine.AUDIO_CODECS:
-            acodec = jiocine.AUDIO_CODECS[acodec]
-            if 'AAC' in acodec:
-                output_name += '.AAC'
-            elif 'AC3' in acodec:
-                output_name += '.DD'
-            elif 'EAC3' in acodec:
-                output_name += '.DD+'
-
-    # Video Codec
-    dyr = content_info['dynamic_range']
-    if dyr and dyr == 'HDR':
-        output_name += '.x265.10bit.HDR'
-    else:
-        vcodec = content_info['vcodec']
-        if vcodec and 'hvc' in vcodec:
-            output_name += '.x265'
-        else:
-            output_name += '.x264'
+    
+    output_name += '.x264'
     
     output = f"{output_name}"
     output_name += '.%(ext)s'
@@ -430,7 +406,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
 
                 ydl.add_post_processor(DRMDecryptPP(), when='post_process')
                
-            
+            print(base_url)
             ydl.download([base_url])
             
             file_path = ydl.prepare_filename(content_info)
