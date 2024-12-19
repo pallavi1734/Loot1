@@ -667,7 +667,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         else:
             is_series_episode = False
         
-        if content['isPremium'] :
+        if content['isPremium'] or (any(pattern in url for pattern in ["widevine"]))::
             pass
         else:
             if is_series_episode:
