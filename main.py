@@ -9,12 +9,19 @@ import jiocine
 import subprocess
 from pyrogram import Client, filters, idle
 from urllib import parse
-
+import logging
 from base64 import b64decode, b64encode
 from yt_dlp.postprocessor import PostProcessor
 from utils import scriptsDir, joinPath, realPath
 from asyncio import create_subprocess_exec, create_subprocess_shell, run_coroutine_threadsafe, sleep
 #from button import ButtonMaker
+LOG_FILE = "log.txt"
+logging.basicConfig(
+    format="[%(asctime)s] [%(levelname)s] - %(message)s",
+    datefmt="%d-%b-%y %I:%M:%S %p",
+    level=logging.INFO,
+    handlers=[logging.FileHandler(LOG_FILE), logging.StreamHandler()]
+)
 def atos(func, *args, wait=True, **kwargs):
     future = run_coroutine_threadsafe(func(*args, **kwargs), bot_loop)
     return future.result() if wait else future
