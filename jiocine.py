@@ -3,8 +3,8 @@ import xmltodict
 #Jio Cinema Downloader Bot Created By Aryan Chaudhary
 # Request object with Session maintained
 session = requests.Session()
-#session.proxies.update({'http': http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155'})
-#session.proxies.update({'http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155'})
+#session.proxies.update({'http': "http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155"})
+session.proxies.update({'http': "http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155"})
 proxy = {'http':'http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155','https':"http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155"}
 # Common Headers for Session
 headers = {
@@ -208,6 +208,75 @@ def getSeriesEpisodes(content_id):
         return None
 
     return result['result']
+
+
+
+def fetchPlaybackDataold(content_id, token):
+    playbackUrl = f"https://apis-jiovoot.voot.com/playback/v1/{content_id}"
+
+    playData = {
+        "4k": True,
+        "ageGroup": "18+",
+        "appVersion": "3.4.0",
+        "bitrateProfile": "xxhdpi",
+        "capability": {
+            "drmCapability": {
+                "aesSupport": "yes",
+                "fairPlayDrmSupport": "none",
+                "playreadyDrmSupport": "yes",
+                "widevineDRMSupport": "yes"
+            },
+            "frameRateCapability": [
+                {
+                    "frameRateSupport": "50fps",
+                    "videoQuality": "2160p"
+                }
+            ]
+        },
+        "continueWatchingRequired": False,
+        "dolby": True,
+        "downloadRequest": False,
+        "hevc": True,
+        "kidsSafe": False,
+        "manufacturer": "Android",
+        "model": "Android",
+        "multiAudioRequired": True,
+        "osVersion": "10",
+        "parentalPinValid": False,
+        "x-apisignatures": "o668nxgzwff",
+        "deviceRange": "",
+        "networkType": "4g",
+        "deviceMemory": 4096  # Web: o668nxgzwff, FTV: 38bb740b55f, JIOSTB: e882582cc55, ATV: d0287ab96d76
+    }
+    playHeaders = {
+        "authority": "apis-jiovoot.voot.com",
+        "accesstoken": token,
+        "x-platform": "androidweb",
+        "x-platform-token": "web",
+        "appname": "RJIL_JioCinema",
+        "jc-user-agent": "JioCinema/2411044 (web; mweb/10; tablet; Chrome Android)",
+        "uniqueid": "0a97cbb8e9a871ba2ae6fde431e24efe",
+        "x-apisignatures": "o668nxgzwff",
+        "versioncode": "2411044",
+        "sec-ch-ua": "\"Not-A.Brand\";v=\"99\", \"Chromium\";v=\"124\"",
+        "sec-ch-ua-platform": "\"Android\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site"
+    }
+    playHeaders.update(headers)
+
+    r = session.post(playbackUrl, json=playData, headers=playHeaders, proxies = proxy)
+    if r.status_code != 200:
+        return None
+        print("problem in playback")
+
+    result = r.json()
+    if not result['data']:
+        return None
+
+    return result['data']
+
 
 
 # Fetch Video URl details using Token
