@@ -459,7 +459,11 @@ def download_playback(message, _content_id, _content_data, is_series=False, att=
     # print(f'[*] Total Duration: {content_playback["totalDuration"]}')
 
     playback_data = None
-    playback_urls = content_playback["playbackUrls"]
+    try:
+        playback_urls = content_playback["playbackUrls"]
+    except Exception:
+        content_playback = jiocine.fetchPlaybackDataold(_content_id, config.get("authToken"))
+        playback_urls = content_playback["playbackUrls"]
 
     # Choose Playback Url
     n_playbacks = len(playback_urls)
