@@ -217,6 +217,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     print(is_multi)
     if is_jc:
         content = jiocine.getContentDetails(content_id)
+    else:
+        content = {"isPremium": False}
     base_url = url
 
     # Output dir path
@@ -270,7 +272,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         is_series_episode = False
     if has_drm:
         ydl_opts['allow_unplayable_formats'] = True
-    elif content['isPremium'] or (any(pattern in base_url for pattern in ["widevine"])):
+    elif is_jc && content['isPremium'] or (any(pattern in base_url for pattern in ["widevine"])):
         print("premium pass")
         pass
     else:
