@@ -3,7 +3,7 @@ import xmltodict
 #Jio Cinema Downloader Bot Created By Aryan Chaudhary
 # Request object with Session maintained
 session = requests.Session()
-#session.proxies.update({'http':'})
+#session.proxies.update({'http': http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155'})
 session.proxies.update({'http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155'})
 proxy = {'http':'http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155','https':"http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155"}
 # Common Headers for Session
