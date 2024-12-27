@@ -751,23 +751,31 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         time.sleep(1)
         message.delete()
         return "hi"
-      
-    for lang in data['formats']:
+    with open(f"hs{user_id}.json",'w') as writ:
+      frmts = {}
+      start = 'a'
+      for lang in data['formats']:
         if lang['resolution'] == "audio only":
             langu = lang['language']
             format = lang['format_id']
+            frmts['start'] = format
+            format = start
             key = f"Audio - {langu}"
             buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_None")
+            start = chr(ord(start) + i)
         else:
             format_id = lang['format_id']
+            frmts['start'] = format_id
+            format_id = start
             try:
               he = lang["height"]
             except Exception:
-              he = format_id
+              he = "unknown"
             vbr = lang["vbr"]
             k = f"Video-{he}p-{vbr}Kbps"
          #   k = f"Video-{lang["height"]}p-{lang["vbr"]}Kbps"
             buttons.ibutton(k, f"d_{format_id}_{ci}_{user_id}_None")
+      json.dump(frmts, writ)
             
             
         
@@ -860,10 +868,15 @@ def download_button(_, callback_query):
         with open(f'info{ci}.json', 'r') as f:
             data = json.load(f)
         formatsa = formatid.split("+")
-        for lange in data['formats']:
+        with open(f"hs{user_id}.json",'r') as writ:
+          frmts = json.load(writ)
+          frmts = {v: k for k, v in frmts.items()}
+          for lange in data['formats']:
             if lange['resolution'] == "audio only":
                 langu = lange['language']
                 format = lange['format_id']
+                format = frmts[format]
+                
                 key = f"Audio - {langu}"
                 for keys in formatsa:
                     if format == keys:
@@ -874,10 +887,11 @@ def download_button(_, callback_query):
                     buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_{langu}")
             else:
                 format_id = lange['format_id']
+                format_id = frmts[format_id]
                 try:
                   he = lange["height"]
                 except Exception:
-                  he = format_id
+                  he = "unknown"
                 vbr = lange["vbr"]
                 key = f"Video-{he}p-{vbr}Kbps"
                 for keys in formatsa:
@@ -922,10 +936,14 @@ def download_button(_, callback_query):
         with open(f'info{ci}.json', 'r') as f:
             data = json.load(f)
         formatsa = formatid.split("+")
-        for lange in data['formats']:
+        with open(f"hs{user_id}.json",'r') as writ:
+          frmts = json.load(writ)
+          frmts = {v: k for k, v in frmts.items()}
+          for lange in data['formats']:
             if lange['resolution'] == "audio only":
                 langu = lange['language']
                 format = lange['format_id']
+                format = frmts[format]
                 key = f"Audio - {langu}"
                 for keys in formatsa:
                     if format == keys:
@@ -936,10 +954,11 @@ def download_button(_, callback_query):
                     buttons.ibutton(f"{key}", f"d_{format}_{ci}_{user_id}_{langu}")
             else:
                 format_id = lange['format_id']
+                format_id = frmts[format_id]
                 try:
                   he = lange["height"]
                 except Exception:
-                  he = format_id
+                  he = "unknown"
                 vbr = lange["vbr"]
                 key = f"Video-{he}p-{vbr}Kbps"
                 
