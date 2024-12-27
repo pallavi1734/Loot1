@@ -658,6 +658,35 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         if datahs["Success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["license_url"]:
             has_drm=True
             license_url = datahs["Success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["license_url"]
+            mpd_data = jiocine.getMPDData(playback_data["url"])
+            if not mpd_data:
+                print("[!] Failed to get MPD manifest")
+                
+
+            periods = mpd_data['MPD']['Period']
+            if not periods:
+                print("[!] Failed to parse MPD manifest")
+            
+
+            rid_kid, pssh_kid = jiocine.parseMPDData(periods)
+            rid_map = rid_kid
+            pssh_cache = config.get("psshCacheStore")
+
+    # Get Keys for all KIDs of PSSH
+            for pssh in pssh_kid.keys():
+        
+
+        # Need to fetch even if one key missing
+                fetch_keys = False
+                if pssh in pssh_cache:
+                    fetch_keys = False
+                    
+                else:
+                    fetch_keys = True
+        
+                if fetch_keys:
+                    pssh_cache[pssh] = requests.get(url='https://hls-proxifier-sage.vercel.app/hotstar',headers={"url":license_url,"pssh":pssh}).json()["keys"]
+                    config.set("psshCacheStore", pssh_cache)
         else:
             license_url = None
     else:
