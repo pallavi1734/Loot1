@@ -300,8 +300,10 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     
     # Save Resolution Choice for every episode
  #   for audio, video in format.items():
+    with open (f"hs{user_id}.json","r") as file:
+        datar = json.load(file)
     formats = formats[1:]
-    
+    formats = '+'.join(datar[i] for i in formats.split('+'))
     ydl_opts['format'] = f"{formats}"
         
     if is_multi:
