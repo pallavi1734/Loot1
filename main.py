@@ -217,6 +217,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         datajc = json.load(f)
     rid_map = datajc['rid_map']
     has_drm = datajc['has_drm']
+    is_hs = datajc['is_hs']
+    license_url = datajc['license_url']
     is_multi = datajc['is_multi']
     is_series = datajc['is_series']
     content_id = datajc['content_id']
@@ -312,6 +314,10 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         
     else:
         output_name = "OTT-DL-(BETA)"
+        if is_hs:
+            output_name = "Hotstar.WebDl"
+            ydl_opts['proxy'] = ""
+            print("proxy Removed")
         if(any(pattern in url for pattern in ["www.sonyliv.com", "sonyliv.com", "sonyliv", "https://www.sonyliv.com"])):
             is_sliv=True 
             token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
@@ -652,6 +658,8 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         if datahs["Success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["license_url"]:
             has_drm=True
             license_url = datahs["Success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["license_url"]
+        else:
+            license_url = None
     else:
         is_hs = False    
     if(any(pattern in url for pattern in ["www.jiocinema.com", "jiocinema.com", "jiocinema", "https://www.jiocinema.com"])):
@@ -789,6 +797,8 @@ def download_button(_, callback_query):
             datajc = json.load(f)
         rid_map = datajc['rid_map']
         has_drm = datajc['has_drm']
+        is_hs = datajc['is_hs']
+        license_url = datajc['license_url']
         is_multi = datajc['is_multi']
         is_series = datajc['is_series']
         content_id = datajc['content_id']
@@ -806,7 +816,7 @@ def download_button(_, callback_query):
 #        formatid = formatid[1:]
   #      formatid = '+'.join(unique_format_ids)
        # lang = f"{language}+{lang}".replace("None","").replace(" ","").replace("NONE","").replace("NONE+","").replace("++","")
-        keys = {"rid_map":rid_map,"has_drm":has_drm,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
+        keys = {"rid_map":rid_map,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
         with open(f'info{ci}.json', 'r') as f:
@@ -860,13 +870,15 @@ def download_button(_, callback_query):
         is_series = datajc['is_series']
         content_id = datajc['content_id']
         url = datajc['url']
+        is_hs = datajc['is_hs']
+        license_url = datajc['license_url']
         formats = datajc['formats']
         language = datajc['language']
         formatid = f"{formats}+{data}".replace("None","").replace("none","").replace("None+","").replace("none+","").replace(" ","").replace("++","+")
         print(formatid)
         lang = lang.upper()
         lang = f"{language}+{lang}".replace("None","").replace(" ","").replace("NONE","").replace("NONE+","").replace("++","")
-        keys = {"rid_map":rid_map,"has_drm":has_drm,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
+        keys = {"rid_map":rid_map,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
         with open(f'info{ci}.json', 'r') as f:
