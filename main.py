@@ -636,7 +636,7 @@ def start_command(client, message):
     app.send_message(message.chat.id, 'Send a JioCinema link to download!')
 #@app.on_message. 
 def check_drm_hs(data):
-    if data["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["license_urls"] == "":
+    if data["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["licence_urls"][0] == "":
         return False
     else:
         return True
@@ -656,8 +656,9 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["content_url"]
         if check_drm_hs(datahs):
             has_drm=True
-            license_url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["license_urls"][0]
+            license_url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["licence_urls"][0]
             mpd_data = jiocine.getMPDData(url)
+            print(json.dumps())
             if not mpd_data:
                 print("[!] Failed to get MPD manifest")
                 
