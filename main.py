@@ -563,13 +563,7 @@ import threading
 import time
 LANG_MAP = {     "en": "English",     "hi": "Hindi",     "gu": "Gujarati",     "ta": "Tamil",     "te": "Telugu",     "kn": "Kannada",     "mr": "Marathi",     "ml": "Malayalam",     "bn": "Bengali",     "bho": "Bhojpuri",     "pa": "Punjabi",     "or": "Oriya" }
 jiodl = 'bot/jiod'
-app = Client(
-    "jiodownloader",
-    bot_token="7574472282:AAEJ_T_pE6ZXnVZnxSIrW75XVvvYoSZU0FU",
-    api_id="5360874",
-    api_hash="4631f40a1b26c2759bf1be4aff1df710",
-    sleep_threshold=30
-)
+
 
 proxy = "0"
 def download_video(url, format, message):
@@ -641,6 +635,11 @@ def split_and_upload_video(file_name, message):
 def start_command(client, message):
     app.send_message(message.chat.id, 'Send a JioCinema link to download!')
 #@app.on_message. 
+def check_drm_hs(data):
+    if data["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["license_urls"] == "":
+        return False
+    else:
+        return True
 def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm=False,rid_map=None,user_id=0):
     import json
     
@@ -654,11 +653,11 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         import json
         headers = {'url':url,'api':'ottapi'}
         datahs = requests.get(url="https://hls-proxifier-sage.vercel.app/hotstar", headers=headers).json()
-        url = datahs["Success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["content_url"]
-        if datahs["Success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["license_url"]:
+        url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["content_url"]
+        if check_drm_hs(datahs):
             has_drm=True
-            license_url = datahs["Success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["license_url"]
-            mpd_data = jiocine.getMPDData(playback_data["url"])
+            license_url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["license_urls"][0]
+            mpd_data = jiocine.getMPDData(url)
             if not mpd_data:
                 print("[!] Failed to get MPD manifest")
                 
@@ -690,7 +689,8 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         else:
             license_url = None
     else:
-        is_hs = False    
+        is_hs = False   
+        license_url = None
     if(any(pattern in url for pattern in ["www.jiocinema.com", "jiocinema.com", "jiocinema", "https://www.jiocinema.com"])):
         is_jc=True 
     else:
