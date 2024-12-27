@@ -100,7 +100,7 @@ class ButtonMaker:
         return InlineKeyboardMarkup(menu)
 
 
-def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False):
+def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False,is_hs=False):
     try:
         os.remove(f"info{ci}.json")
     except Exception:
@@ -112,6 +112,9 @@ def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False):
     elif is_sliv:
         
         subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p {token} --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155 --dump-json {url} > info{ci}.json",shell=True)
+
+    elif is_hs:
+        subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --dump-json {url} > info{ci}.json",shell=True)
     else:
         subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155 --dump-json {url} > info{ci}.json",shell=True)
     import json
@@ -640,7 +643,17 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         
     else:
         is_dngplay=False
-        
+    if(any(pattern in url for pattern in ["www.hotstar.com", "hotstar.com", "hotstar", "https://www.hotstar.com"])):
+        is_hs = True 
+        import json
+        headers = {'url':url,'api':'ottapi'}
+        datahs = requests.get(url="https://hls-proxifier-sage.vercel.app/hotstar", headers=headers).json()
+        url = datahs["Success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["content_url"]
+        if datahs["Success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["license_url"]:
+            has_drm=True
+            license_url = datahs["Success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["license_url"]
+    else:
+        is_hs = False    
     if(any(pattern in url for pattern in ["www.jiocinema.com", "jiocinema.com", "jiocinema", "https://www.jiocinema.com"])):
         is_jc=True 
     else:
@@ -652,7 +665,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         is_sliv=False
         
     if 2<3:
-        keys = {"rid_map":rid_map,"has_drm":has_drm,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
+        keys = {"rid_map":rid_map,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
 
@@ -680,7 +693,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                 print(url)
 
         
-    data = extractyt(url=url,ci=ci,is_dngplay=is_dngplay,is_sliv=is_sliv)
+    data = extractyt(url=url,ci=ci,is_dngplay=is_dngplay,is_sliv=is_sliv,is_hs=is_hs)
    
     keyboard = []
     buttons = ButtonMaker()
