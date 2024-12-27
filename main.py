@@ -266,6 +266,13 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     }
     if is_jc:
         ydl_opts['http_headers'] = ydl_headers
+    if is_hs:
+        headersy = {
+                      "Origin": "https://www.hotstar.com",
+                      "Referer": "https://www.hotstar.com/",
+                      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+        }
+        ydl_opts['http_headers'] = headersy
     if os.path.exists(f"{ci}.json"):
         with open(f"{ci}.json",'r') as f:
             drm = json.load(f)
@@ -669,7 +676,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                       "Referer": "https://www.hotstar.com/",
                       "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
             }
-            r = requests.get(mpd_url, headers=headersy)
+            r = requests.get(url, headers=headersy)
             mpd_data = xmltodict.parse(r.content)
             if not mpd_data:
                 print("[!] Failed to get MPD manifest")
