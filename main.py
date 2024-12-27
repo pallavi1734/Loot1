@@ -666,7 +666,11 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         is_hs = True 
         import json
         headers = {'url':url,'api':'ottapi'}
-        datahs = requests.get(url="https://hls-proxifier-sage.vercel.app/hotstar", headers=headers).json()
+        if url.split('/')[-3] == "movies":
+            type = "movies"
+        else:
+            type = "shows"
+        datahs = requests.get(url=f"https://hls-proxifier-sage.vercel.app/hotstar?type={type}", headers=headers).json()
         url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["content_url"]
         if check_drm_hs(datahs):
             has_drm=True
