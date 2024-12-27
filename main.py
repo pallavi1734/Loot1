@@ -659,7 +659,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             has_drm=True
             license_url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["licence_urls"][0]
             mpd_data = jiocine.getMPDData(url)
-            print(json.dumps())
+            print(json.dumps(mpd_data))
             if not mpd_data:
                 print("[!] Failed to get MPD manifest")
                 
