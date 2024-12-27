@@ -658,15 +658,22 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         if check_drm_hs(datahs):
             has_drm=True
             license_url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["licence_urls"][0]
-            mpd_data = jiocine.getMPDData(url)
-            print(json.dumps(mpd_data))
+            headersy = {
+                      "Origin": "https://www.hotstar.com",
+                      "Referer": "https://www.hotstar.com/",
+                      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+            }
+            r = requests.get(mpd_url, headers=headersy)
+            mpd_data = xmltodict.parse(r.content)
             if not mpd_data:
                 print("[!] Failed to get MPD manifest")
+                return
                 
 
             periods = mpd_data['MPD']['Period']
             if not periods:
                 print("[!] Failed to parse MPD manifest")
+                return
             
 
             rid_kid, pssh_kid = jiocine.parseMPDData(periods)
