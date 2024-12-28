@@ -697,7 +697,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             logging.info(r)
             import xmltodict
             logging.info(r.content)
-            mpd_data = xmltodict.parse(r.content)
+            mpd_data = xmltodict.parse(r.text)
             if not mpd_data:
                 print("[!] Failed to get MPD manifest")
                 return
