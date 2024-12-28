@@ -332,6 +332,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
             output_name = "Hotstar.WebDl"
             ydl_opts['proxy'] = ""
             print("proxy Removed")
+            ydl_opts['skip_download"] = True 
         if(any(pattern in url for pattern in ["www.sonyliv.com", "sonyliv.com", "sonyliv", "https://www.sonyliv.com"])):
             is_sliv=True 
             token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
@@ -547,6 +548,8 @@ def download_playback(message, _content_id, _content_data, is_series=False, att=
             exit(0)
 
         rid_kid, pssh_kid = jiocine.parseMPDData(periods)
+        print(pssh_kid)
+        print(rid_kid)
 
         # Proceed for DRM keys only if PSSH is there
         if len(pssh_kid) > 0:
@@ -1095,10 +1098,10 @@ def jiodl(client, message):
 
     
 
-    if content_data['isPremium'] :
+    if content_data['isPremium'] or 2<3 :
         Token = requests.get("https://hls-proxifier-sage.vercel.app/jiotoken").json()['token']
         config.set("authToken", Token)
-        m.edit("[+] Need Premium Account for this Content")
+        m.edit("[+] Need Premium Account for this Content Or Fetching Token")
      #   exit(0)
 
     # Show and Series links are complicated
