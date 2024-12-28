@@ -694,7 +694,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             }
             r = requests.get(url, headers=headersy)
             import logging
-            looging.info(r)
+            logging.info(r)
             import xmltodict
             logging.info(r.content)
             mpd_data = xmltodict.parse(r.content)
