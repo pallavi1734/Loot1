@@ -42,7 +42,7 @@ DL_DONE_MSG = """
 <b>Size : </b> <code>{}</code>
 """
 
-token_file = os.path.join(dirPath, "static", "session")
+token_file = os.path.join(dirPath, "session")
 
 dl_folder = os.path.join(dirPath, "downloads")  
 
