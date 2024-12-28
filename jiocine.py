@@ -280,8 +280,22 @@ def fetchPlaybackDataold(content_id, token):
 
 
 # Fetch Video URl details using Token
-def getMPDData(mpd_url):
-    r = session.get(mpd_url, headers=headers, proxies=proxy)
+
+def getMPDData(mpd_url,is_hs=False):
+    headerhs = {
+    "Origin": "https://www.hotstar.com",
+    "Referer": "https://www.hotstar.com/",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+    }
+    headerjcs = {
+    "Origin": "https://www.jiocinema.com",
+    "Referer": "https://www.jiocinema.com/",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+    }
+    if is_hs:
+        r = session.get(mpd_url, headers=headerhs, proxies=proxy)
+    else:
+        r = session.get(mpd_url, headers=headers, proxies=proxy)
     if r.status_code != 200:
         return None
 
