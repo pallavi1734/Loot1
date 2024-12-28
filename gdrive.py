@@ -103,21 +103,8 @@ class GoogleDriveUploader:
                 InlineKeyboardButton("🚀 Index URL", url=f"{indexLink}")
             ]
 
-            if GD_SHARER_CONFIG.is_uploading_to_filepress and GD_SHARER_CONFIG.filepress_connect_sid_cookie_value and GD_SHARER_CONFIG.filepress_connect_sid_cookie_value.strip():
-                
-                filepress_url = upload_to_filepress(link)
-                keyboard_buttons.append(drive_and_index_buttons)
-
-                if filepress_url is not None:
-
-                    keyboard_buttons.append([
-                        InlineKeyboardButton("🔗 Filepress URL", url=f"{filepress_url}")
-                    ])
-                else:
-                    print("Filpress Upload for {} Failed check cookie value again".format(link))
-
-            else:
-                keyboard_buttons.append(drive_and_index_buttons)
+            
+            keyboard_buttons.append(drive_and_index_buttons)
 
         else:
             
@@ -127,22 +114,7 @@ class GoogleDriveUploader:
             ]
                 keyboard_buttons.append(drive_button)
 
-            if GD_SHARER_CONFIG.is_uploading_to_filepress and GD_SHARER_CONFIG.filepress_connect_sid_cookie_value and GD_SHARER_CONFIG.filepress_connect_sid_cookie_value.strip():
-
-                filepress_url = upload_to_filepress(link)
-                
-                if filepress_url is not None:
-                    keyboard_buttons.append([
-                        InlineKeyboardButton("🔗 Drive URL", url=f"{link}")
-                    ])
-                    # Append the Filepress URL button
-                    keyboard_buttons.append([
-                        InlineKeyboardButton("🔗 Filepress URL", url=f"{filepress_url}")
-                    ])
-                else:
-                    print("Filpress Upload for {} Failed check cookie value again".format(link))
-                
-
+            
 
 
         inline_keyboard = InlineKeyboardMarkup(keyboard_buttons)
