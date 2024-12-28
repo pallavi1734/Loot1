@@ -654,7 +654,23 @@ def split_and_upload_video(file_name, message):
         os.remove(file_name)
 @app.on_message(Filters.command('start'))
 def start_command(client, message):
-    app.send_message(message.chat.id, 'Send a JioCinema link to download!')
+    app.send_message(message.chat.id, "I'm Hinata Hyuga Girlfriend of Mahesh \n\nI can download Ott content And Upload \n\nFor Subscription Contact Babe @PayPalMafiaSupportbot! \n\nBot made by My Babe 🫣 .")
+
+@app.on_message(Filters.command('plans'))
+def plans(client, message):
+    app.send_message(message.chat.id, "**🙂 OTT Downloader Bot Plans 🙂  \n\n👇INDIVIDUAL PLANS(All OTTs)👇 \n\n😇 1 day - ₹20 😇 \n\n😇 7 days - ₹50 😇 \n\n😇 30 days - ₹130 😇 \n\n😇 60 days - ₹260 😇 \n\n😇 355 days - ₹999 😇 \n\n🚨 Check all otts which are supported otts in bot by sending /otts before purchase 🚨 \n\n🚨 Terms And Conditions 🚨 \n\n🧐 Once Payment Done No refund Will be done. \n\n🧐 our services are non refundable. \n\n🧐 If services are stopped then you will get extra validity of your remaining balance. \n\n🧐 No abuse in bot**")
+    
+@app.on_message(Filters.command('otts'))
+def otts(client, message):
+    app.send_message(message.chat.id, "🤭 I Can Download Below otts and Send you 🤭 \n\n**__--List:---__** \n\nJio cinema \nDangal Play \nMx Player \nAmazon Mini TV \nHotstar/Disney Free content ( Adding Premium in some Days ) \nMore OTTs Adding Soon! \n\n🥰 Thanks For Using OTT Drm Bot 🥰")
+
+@app.on_message(Filters.command('help'))
+def help(client, message):
+    app.send_message(message.chat.id, "**__Here You can Know about All available Commands:-\n\n     /start -  To start The Bot. \n    /help - Show Help & Features. \n    /features - See available features. \n    /plans -  See available plans.\n    /otts :- To check available OTTs. \n\n\nFeatures:- \n\n1. /mahsneh url \n 2. Select the button (Quality). \n\nJust send me any DRM links from supported sites with /mahsneh to download That.__**")
+
+@app.on_message(Filters.command('features'))
+def features(client, message):
+    app.send_message(message.chat.id, "**Ara Ara! I am Hinata Hyuga an Drm Downloader Bot. \n\n💥 Send Any DRM Link I will upload it To Telegram. \n\n💥 I support Direct DRM link from Dangal play, Hotstar, JioCinema, Mx Player.**")
 #@app.on_message. 
 def check_drm_hs(data):
     if data["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["licence_urls"][0] == "":
@@ -1023,13 +1039,13 @@ def download_button(_, callback_query):
     
 
 
-@app.on_message(filters.chat(sudo_users) & filters.command("dl"))
+@app.on_message(filters.chat(sudo_users) & filters.command("mahsneh"))
 def jiodl(client, message):
 
     user_id = message.from_user.id
-    print('[=>] OTT Downloader Starting Created By Aryan Chaudhary')
+    print('[=>] OTT Downloader Starting Created By Mahesh Kadali')
     import logging
-    logging.info('[=>] OTT Downloader Starting Created By Aryan Chaudhary')
+    logging.info('[=>] OTT Downloader Starting Created By Mahesh Kadali')
 
     # Fetch Guest token when Not using Account token
     if not config.get("authToken") and not config.get("useAccount"):
