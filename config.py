@@ -26,12 +26,7 @@ class GD_SHARER_CONFIG:
     is_uploading_to_filepress = False
 
     #Don't add a trailing slash at the end (keep in this format only - https://new5.filepress.store)
-    filepress_url = "https://new9.filepress.store"
     
-    cookie_path = dirPath + "/cookies/filepress.txt"
-    _, dict_cookies = get_cookies(cookie_path)
-    
-    filepress_connect_sid_cookie_value = dict_cookies.get("connect.sid")
 
 
 DL_DONE_MSG = """
@@ -44,9 +39,8 @@ DL_DONE_MSG = """
 
 token_file = os.path.join(dirPath, "session")
 
-dl_folder = os.path.join(dirPath, "downloads")  
+dl_folder = os.path.join(dirPath)  
 
-os.makedirs(dl_folder) if not os.path.exists(dl_folder) else None
 
 
 gauth = GoogleAuth()
