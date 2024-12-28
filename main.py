@@ -693,6 +693,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                       "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
             }
             r = requests.get(url, headers=headersy)
+            import xmltodict
             mpd_data = xmltodict.parse(r.content)
             if not mpd_data:
                 print("[!] Failed to get MPD manifest")
