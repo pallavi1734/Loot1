@@ -41,7 +41,7 @@ token_file = os.path.join(dirPath, "session")
 
 dl_folder = os.path.join(dirPath)  
 
-client_secrets_json = os.path.join(dirPath, "client.json")
+client_secrets_json = os.path.join(dirPath, "client_secrets.json")
 
 gauth = GoogleAuth()
 GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = client_secrets_json
