@@ -10,7 +10,7 @@ if ospath.exists('log.txt'):
 
 if ospath.exists('rlog.txt'):
     remove('rlog.txt')
-UPSTREAM_REPO="https://github.com/aryanchy451/Deploy"
+UPSTREAM_REPO="https://aryanchy451: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@github.com/aryanchy451/Ott-Downloader-By-Aryan-Chaudhary"
 UPSTREAM_BRANCH="main"
 if UPSTREAM_REPO is not None:
     if ospath.exists('.git'):
