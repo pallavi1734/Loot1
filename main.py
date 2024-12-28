@@ -126,8 +126,8 @@ def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False,is_hs=False):
 # Generate main config file from definition config before starting
 
 app = Client(
-    "jiocinemaripbot",
-    bot_token="7574472282:AAEJ_T_pE6ZXnVZnxSIrW75XVvvYoSZU0FU",
+    "jiocinemadownloadbot",
+    bot_token="7851110530:AAEoTdaIvbWd1cK59ZWjgxZV7PuIU74s3SQ",
     api_id="5360874",
     api_hash="4631f40a1b26c2759bf1be4aff1df710",
     sleep_threshold=30
@@ -329,7 +329,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     else:
         output_name = "OTT-DL-(BETA)"
         if is_hs:
-            output_name = "Hotstar.WebDl"
+            output_name = "Hotstar.Web.DL"
             ydl_opts['proxy'] = ""
             print("proxy Removed")
             
@@ -367,7 +367,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         pass
     output_name += f'.{language}'
     output_name += '.WEB-DL-JC'
-    output_name += ".@aryanchy451"
+    output_name += ".@maheshsirop"
     
 
     # Audio Codec
@@ -883,7 +883,7 @@ def download_button(_, callback_query):
             download_vod_ytdlp(url, message, ci,user_id=user_id) 
         return
     elif data == "selected":
-        callback_query.answer("Can't Select Again Try Reload # Created By Aryan Chaudhary")
+        callback_query.answer("Can't Select Again Try Reload # Created By Mahesh Kadali")
         return
     elif data == "reload":
  #       print(user_id)
