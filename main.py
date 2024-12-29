@@ -756,7 +756,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             pass
         
         if datasliv["isencrypted"]:
-            license_url = datasliv["licurl"]
+            license_url = datasliv["lic_url"]
             has_drm=True
          #   license_url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["licence_urls"][0]
             headersy = {
