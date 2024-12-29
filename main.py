@@ -301,7 +301,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
 
         else:
             base_url = f"https://www.jiocinema.com/movies/h/{ci}"
-    ydl_opts["proxy"] = "http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155"
+    ydl_opts["proxy"] = "http://toonrips:xipTsP9H9s@103.171.51.246:50100"
     ydl_opts["no_check_certificate"] = True
     
     
@@ -390,7 +390,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     frmts = formats.split("+")
     link = url
     
-     # aria = subprocess.run(f"yt-dlp -f {dejc} -o downloads/temp/{dest} --external-downloader aria2c --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 {link} --allow-unplayable-formats")
+     # aria = subprocess.run(f"yt-dlp -f {dejc} -o downloads/temp/{dest} --external-downloader aria2c --proxy http://toonrips:xipTsP9H9s@103.171.51.246:50100 {link} --allow-unplayable-formats")
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             # Custom Decryter for DRM Vids
@@ -456,31 +456,17 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
             file_path = ydl.prepare_filename(content_info)
             config.set("authToken","")
             try:
-                out_file_name = file_path
-    
-                ms.edit("Uploading To Google Drive")
-                import time
-                from gdrive import GoogleDriveUploader
-                srt = time.time()
-                upload_path = "BOT Uploads/{}/{}".format("OTTDOWNLOAD", "Driver")
-                uploader = GoogleDriveUploader(app, ms, srt)
-                uploader.upload_file(out_file_name, upload_path)
-                print("File Uploaded")
+                from tg import tgUploader
+                uploader = tgUploader(app, ms, ms.chat.id)
+                up = uploader.upload_file(file_path)
             except Exception as e:
                 print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
             try:
                 #file_path = ydl.prepare_filename(content_info)
                 file_path = file_path[:-1][:-1][:-1][:-1]+".mkv"
-                out_file_name = file_path
-    
-               # ms.edit("Uploading To Google Drive.")
-                import time
-                from gdrive import GoogleDriveUploader
-                srt = time.time()
-                upload_path = "BOT Uploads/{}/{}".format("OTTDOWNLOAD", "Driver")
-                uploader = GoogleDriveUploader(app, ms, srt)
-                uploader.upload_file(out_file_name, upload_path)
-                print("File Uploaded")
+                from tg import tgUploader
+                uploader = tgUploader(app, ms, ms.chat.id)
+                up = uploader.upload_file(file_path)
             except Exception as e:
                 print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
     except yt_dlp.utils.DownloadError as e:
