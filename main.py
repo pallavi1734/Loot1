@@ -473,7 +473,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                 file_path = file_path[:-1][:-1][:-1][:-1]+".mkv"
                 out_file_name = file_path
     
-                ms.edit("Uploading To Google Drive.")
+               # ms.edit("Uploading To Google Drive.")
                 import time
                 from gdrive import GoogleDriveUploader
                 srt = time.time()
