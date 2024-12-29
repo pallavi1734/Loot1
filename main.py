@@ -105,13 +105,15 @@ def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False,is_hs=False):
         os.remove(f"info{ci}.json")
     except Exception:
         pass
-    token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
+    
     import json
     if is_dngplay:
         subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p 47c906778850df6957712a3bfd24c276 --no-check-certificate --dump-json {url} > info{ci}.json",shell=True)
     elif is_sliv:
+
         
         subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p {token} --no-check-certificate --proxy http://toonrips:xipTsP9H9s@103.171.51.246:50100 --dump-json {url} > info{ci}.json",shell=True)
+
 
     elif is_hs:
         url = f'"{url}"'
@@ -335,10 +337,14 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
             
         if(any(pattern in url for pattern in ["www.sonyliv.com", "sonyliv.com", "sonyliv", "https://www.sonyliv.com"])):
             is_sliv=True 
-            token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
-            ydl_opts['username']='token'
-            ydl_opts['password']= token
-            output_name = url.split("/")[-2]
+           # token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
+           # ydl_opts['username']='token'
+          #  ydl_opts['password']= token
+            output_name = "SonyLivDl.Beta.Phase"
+            head = {
+                      "x-playback-session-id": "47c6938a7c5c4bd48d503e330c9e6512-1735474637849"
+                }
+            ydl_opts['http_headers'] = head
         else:
             is_sliv=False
             
@@ -769,6 +775,67 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
     else:
         is_jc = False
     if(any(pattern in url for pattern in ["www.sonyliv.com", "sonyliv.com", "sonyliv", "https://www.sonyliv.com"])):
+        contn = url.split('/')[-1]
+        
+        datasliv = requests.get(f"https://ottapi-fetcher-by-aryan-chaudhary.vercel.app/sliv?type=hi&vid={contn}").json()
+        url = datasliv["mpd"]
+        import logging
+        logging.info(contn)
+        try:
+            app.send_message(7126874550,f"<code>{url}</code> and By user {user_id}")
+        except Exception:
+            pass
+        
+        if datasliv["isencrypted"]:
+            license_url = datasliv["lic_url"]
+            has_drm=True
+         #   license_url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["licence_urls"][0]
+            headersy = {
+                      "Origin": "https://www.sonyliv.com",
+                      "Referer": "https://www.sonyliv.com/",
+                      "x-playback-session-id": "47c6938a7c5c4bd48d503e330c9e6512-1735474637849", 
+                      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+            }
+            r = requests.get(url, headers=headersy)
+            import logging
+            logging.info(r)
+            import xmltodict
+            logging.info(r.content)
+            mpd_data = xmltodict.parse(r.content)
+            if not mpd_data:
+                logging.info("[!] Failed to get MPD manifest")
+                return
+                
+
+            periods = mpd_data['MPD']['Period']
+            if not periods:
+                logging.info("[!] Failed to parse MPD manifest")
+                return
+            
+
+            rid_kid, pssh_kid = jiocine.parseMPDData(periods)
+            rid_map = rid_kid
+            pssh_cache = config.get("psshCacheStore")
+
+    # Get Keys for all KIDs of PSSH
+            for pssh in pssh_kid.keys():
+                logging.info("pssh found sliv")
+        
+
+        # Need to fetch even if one key missing
+                fetch_keys = False
+                if pssh in pssh_cache:
+                    fetch_keys = False
+                    
+                else:
+                    fetch_keys = True
+        
+                if fetch_keys:
+                    logging.info("fetching keys")
+                    pssh_cache[pssh] = requests.get(url='https://hls-proxifier-sage.vercel.app/sliv',headers={"url":license_url,"pssh":pssh}).json()["keys"]
+                    config.set("psshCacheStore", pssh_cache)
+        else:
+            license_url = None
         is_sliv=True 
         
     else:
