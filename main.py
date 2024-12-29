@@ -456,17 +456,31 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
             file_path = ydl.prepare_filename(content_info)
             config.set("authToken","")
             try:
-                from tg import tgUploader
-                uploader = tgUploader(app, ms, ms.chat.id)
-                up = uploader.upload_file(file_path)
+                out_file_name = file_path
+    
+                ms.edit("Uploading To Google Drive")
+                import time
+                from gdrive import GoogleDriveUploader
+                srt = time.time()
+                upload_path = "BOT Uploads/{}/{}".format("OTTDOWNLOAD", "Driver")
+                uploader = GoogleDriveUploader(app, ms, srt)
+                uploader.upload_file(out_file_name, upload_path)
+                print("File Uploaded")
             except Exception as e:
                 print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
             try:
                 #file_path = ydl.prepare_filename(content_info)
                 file_path = file_path[:-1][:-1][:-1][:-1]+".mkv"
-                from tg import tgUploader
-                uploader = tgUploader(app, ms, ms.chat.id)
-                up = uploader.upload_file(file_path)
+                out_file_name = file_path
+    
+               # ms.edit("Uploading To Google Drive.")
+                import time
+                from gdrive import GoogleDriveUploader
+                srt = time.time()
+                upload_path = "BOT Uploads/{}/{}".format("OTTDOWNLOAD", "Driver")
+                uploader = GoogleDriveUploader(app, ms, srt)
+                uploader.upload_file(out_file_name, upload_path)
+                print("File Uploaded")
             except Exception as e:
                 print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
     except yt_dlp.utils.DownloadError as e:
