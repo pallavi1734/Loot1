@@ -110,9 +110,10 @@ def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False,is_hs=False):
     if is_dngplay:
         subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p 47c906778850df6957712a3bfd24c276 --no-check-certificate --dump-json {url} > info{ci}.json",shell=True)
     elif is_sliv:
-      #  token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
-        tok = "47c6938a7c5c4bd48d503e330c9e6512-1735474637849"
-        subprocess.run(f"yt-dlp --allow-unplayable-formats --add-headers x-playback-session-id:{tok} --no-check-certificate --proxy http://toonrips:xipTsP9H9s@103.171.51.246:50100 --dump-json {url} > info{ci}.json",shell=True)
+
+        
+        subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p {token} --no-check-certificate --proxy http://toonrips:xipTsP9H9s@103.171.51.246:50100 --dump-json {url} > info{ci}.json",shell=True)
+
 
     elif is_hs:
         url = f'"{url}"'
@@ -127,8 +128,8 @@ def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False,is_hs=False):
 # Generate main config file from definition config before starting
 
 app = Client(
-    "jiocinemaripbot",
-    bot_token="7574472282:AAEJ_T_pE6ZXnVZnxSIrW75XVvvYoSZU0FU",
+    "jiocinemadownloadbot",
+    bot_token="7851110530:AAEoTdaIvbWd1cK59ZWjgxZV7PuIU74s3SQ",
     api_id="5360874",
     api_hash="4631f40a1b26c2759bf1be4aff1df710",
     sleep_threshold=30
@@ -330,7 +331,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     else:
         output_name = "OTT-DL-(BETA)"
         if is_hs:
-            output_name = "Hotstar.WebDl"
+            output_name = "Hotstar.Web.DL"
             ydl_opts['proxy'] = ""
             print("proxy Removed")
             
@@ -372,7 +373,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         pass
     output_name += f'.{language}'
     output_name += '.WEB-DL-JC'
-    output_name += ".@aryanchy451"
+    output_name += ".@maheshsirop"
     
 
     # Audio Codec
@@ -395,7 +396,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     frmts = formats.split("+")
     link = url
     
-     # aria = subprocess.run(f"yt-dlp -f {dejc} -o downloads/temp/{dest} --external-downloader aria2c --proxy http://bobprakash4646:ivR8gSbjLN@103.171.50.159:49155 {link} --allow-unplayable-formats")
+     # aria = subprocess.run(f"yt-dlp -f {dejc} -o downloads/temp/{dest} --external-downloader aria2c --proxy http://toonrips:xipTsP9H9s@103.171.51.246:50100 {link} --allow-unplayable-formats")
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             # Custom Decryter for DRM Vids
@@ -461,17 +462,31 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
             file_path = ydl.prepare_filename(content_info)
             config.set("authToken","")
             try:
-                from tg import tgUploader
-                uploader = tgUploader(app, ms, ms.chat.id)
-                up = uploader.upload_file(file_path)
+                out_file_name = file_path
+    
+                ms.edit("Uploading To Google Drive")
+                import time
+                from gdrive import GoogleDriveUploader
+                srt = time.time()
+                upload_path = "BOT Uploads/{}/{}".format("OTTDOWNLOAD", "Driver")
+                uploader = GoogleDriveUploader(app, ms, srt)
+                uploader.upload_file(out_file_name, upload_path)
+                print("File Uploaded")
             except Exception as e:
                 print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
             try:
                 #file_path = ydl.prepare_filename(content_info)
                 file_path = file_path[:-1][:-1][:-1][:-1]+".mkv"
-                from tg import tgUploader
-                uploader = tgUploader(app, ms, ms.chat.id)
-                up = uploader.upload_file(file_path)
+                out_file_name = file_path
+    
+               # ms.edit("Uploading To Google Drive.")
+                import time
+                from gdrive import GoogleDriveUploader
+                srt = time.time()
+                upload_path = "BOT Uploads/{}/{}".format("OTTDOWNLOAD", "Driver")
+                uploader = GoogleDriveUploader(app, ms, srt)
+                uploader.upload_file(out_file_name, upload_path)
+                print("File Uploaded")
             except Exception as e:
                 print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
     except yt_dlp.utils.DownloadError as e:
@@ -659,7 +674,23 @@ def split_and_upload_video(file_name, message):
         os.remove(file_name)
 @app.on_message(Filters.command('start'))
 def start_command(client, message):
-    app.send_message(message.chat.id, 'Send a JioCinema link to download!')
+    app.send_message(message.chat.id, "I'm Hinata Hyuga Girlfriend of Mahesh \n\nI can download Ott content And Upload \n\nFor Subscription Contact Babe @PayPalMafiaSupportbot! \n\nBot made by My Babe 🫣 .")
+
+@app.on_message(Filters.command('plans'))
+def plans(client, message):
+    app.send_message(message.chat.id, "**🙂 OTT Downloader Bot Plans 🙂  \n\n👇INDIVIDUAL PLANS(All OTTs)👇 \n\n😇 1 day - ₹20 😇 \n\n😇 7 days - ₹50 😇 \n\n😇 30 days - ₹130 😇 \n\n😇 60 days - ₹260 😇 \n\n😇 355 days - ₹999 😇 \n\n🚨 Check all otts which are supported otts in bot by sending /otts before purchase 🚨 \n\n🚨 Terms And Conditions 🚨 \n\n🧐 Once Payment Done No refund Will be done. \n\n🧐 our services are non refundable. \n\n🧐 If services are stopped then you will get extra validity of your remaining balance. \n\n🧐 No abuse in bot**")
+    
+@app.on_message(Filters.command('otts'))
+def otts(client, message):
+    app.send_message(message.chat.id, "🤭 I Can Download Below otts and Send you 🤭 \n\n**__--List:---__** \n\nJio cinema \nDangal Play \nMx Player \nAmazon Mini TV \nHotstar/Disney Free content ( Adding Premium in some Days ) \nMore OTTs Adding Soon! \n\n🥰 Thanks For Using OTT Drm Bot 🥰")
+
+@app.on_message(Filters.command('help'))
+def help(client, message):
+    app.send_message(message.chat.id, "**__Here You can Know about All available Commands:-\n\n     /start -  To start The Bot. \n    /help - Show Help & Features. \n    /features - See available features. \n    /plans -  See available plans.\n    /otts :- To check available OTTs. \n\n\nFeatures:- \n\n1. /mahsneh url \n 2. Select the button (Quality). \n\nJust send me any DRM links from supported sites with /mahsneh to download That.__**")
+
+@app.on_message(Filters.command('features'))
+def features(client, message):
+    app.send_message(message.chat.id, "**Ara Ara! I am Hinata Hyuga an Drm Downloader Bot. \n\n💥 Send Any DRM Link I will upload it To Telegram. \n\n💥 I support Direct DRM link from Dangal play, Hotstar, JioCinema, Mx Player.**")
 #@app.on_message. 
 def check_drm_hs(data):
     if data["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["licence_urls"][0] == "":
@@ -937,7 +968,7 @@ def download_button(_, callback_query):
             download_vod_ytdlp(url, message, ci,user_id=user_id) 
         return
     elif data == "selected":
-        callback_query.answer("Can't Select Again Try Reload # Created By Aryan Chaudhary")
+        callback_query.answer("Can't Select Again Try Reload # Created By Mahesh Kadali")
         return
     elif data == "reload":
  #       print(user_id)
@@ -1093,13 +1124,13 @@ def download_button(_, callback_query):
     
 
 
-@app.on_message(filters.chat(sudo_users) & filters.command("dl"))
+@app.on_message(filters.chat(sudo_users) & filters.command("mahsneh"))
 def jiodl(client, message):
 
     user_id = message.from_user.id
-    print('[=>] OTT Downloader Starting Created By Aryan Chaudhary')
+    print('[=>] OTT Downloader Starting Created By Mahesh Kadali')
     import logging
-    logging.info('[=>] OTT Downloader Starting Created By Aryan Chaudhary')
+    logging.info('[=>] OTT Downloader Starting Created By Mahesh Kadali')
 
     # Fetch Guest token when Not using Account token
     if not config.get("authToken") and not config.get("useAccount"):
