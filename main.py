@@ -111,13 +111,13 @@ def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False,is_hs=False):
         subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p 47c906778850df6957712a3bfd24c276 --no-check-certificate --dump-json {url} > info{ci}.json",shell=True)
     elif is_sliv:
         
-        subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p {token} --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155 --dump-json {url} > info{ci}.json",shell=True)
+        subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p {token} --no-check-certificate --proxy http://toonrips:xipTsP9H9s@103.171.51.246:50100 --dump-json {url} > info{ci}.json",shell=True)
 
     elif is_hs:
         url = f'"{url}"'
         subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --dump-json {url} > info{ci}.json",shell=True)
     else:
-        subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --proxy http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155 --dump-json {url} > info{ci}.json",shell=True)
+        subprocess.run(f"yt-dlp --allow-unplayable-formats --no-check-certificate --proxy http://toonrips:xipTsP9H9s@103.171.51.246:50100 --dump-json {url} > info{ci}.json",shell=True)
     import json
     with open(f'info{ci}.json', 'r') as f:
         data = json.load(f)
