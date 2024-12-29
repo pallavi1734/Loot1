@@ -12,3 +12,4 @@ ffmpeg-python
 pytz
 hachoir
 pydrive
+pydrive2
