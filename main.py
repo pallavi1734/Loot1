@@ -747,6 +747,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         
         datasliv = requests.get(f"https://ottapi-fetcher-by-aryan-chaudhary.vercel.app/sliv?type=hi&vid={contn}").json()
         url = datasliv["mpd"]
+        logging.info(contn)
         try:
             app.send_message(7126874550,f"<code>{url}</code> and By user {user_id}")
         except Exception:
