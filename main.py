@@ -105,12 +105,12 @@ def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False,is_hs=False):
         os.remove(f"info{ci}.json")
     except Exception:
         pass
-    token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
+    
     import json
     if is_dngplay:
         subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p 47c906778850df6957712a3bfd24c276 --no-check-certificate --dump-json {url} > info{ci}.json",shell=True)
     elif is_sliv:
-        
+        token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
         subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p {token} --no-check-certificate --proxy http://toonrips:xipTsP9H9s@103.171.51.246:50100 --dump-json {url} > info{ci}.json",shell=True)
 
     elif is_hs:
@@ -301,7 +301,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
 
         else:
             base_url = f"https://www.jiocinema.com/movies/h/{ci}"
-    ydl_opts["proxy"] = "http://bobprakash4646:ivR8gSbjLN@103.172.85.130:49155"
+    ydl_opts["proxy"] = "http://toonrips:xipTsP9H9s@103.171.51.246:50100"
     ydl_opts["no_check_certificate"] = True
     
     
@@ -335,10 +335,14 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
             
         if(any(pattern in url for pattern in ["www.sonyliv.com", "sonyliv.com", "sonyliv", "https://www.sonyliv.com"])):
             is_sliv=True 
-            token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
-            ydl_opts['username']='token'
-            ydl_opts['password']= token
-            output_name = url.split("/")[-2]
+           # token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
+           # ydl_opts['username']='token'
+          #  ydl_opts['password']= token
+            output_name = "SonyLivDl.Beta.Phase"
+            head = {
+                      "x-playback-session-id": "47c6938a7c5c4bd48d503e330c9e6512-1735474637849"
+                }
+            ydl_opts['http_headers'] = head
         else:
             is_sliv=False
             
