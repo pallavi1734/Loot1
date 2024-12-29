@@ -110,8 +110,8 @@ def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False,is_hs=False):
     if is_dngplay:
         subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p 47c906778850df6957712a3bfd24c276 --no-check-certificate --dump-json {url} > info{ci}.json",shell=True)
     elif is_sliv:
-        token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
-        subprocess.run(f"yt-dlp --allow-unplayable-formats -u token -p {token} --no-check-certificate --proxy http://toonrips:xipTsP9H9s@103.171.51.246:50100 --dump-json {url} > info{ci}.json",shell=True)
+      #  token = requests.get("https://ccroute.vercel.app/sliv").json()["token"]
+        subprocess.run(f"yt-dlp --allow-unplayable-formats --add-headers "x-playback-session-id":"47c6938a7c5c4bd48d503e330c9e6512-1735474637849" --no-check-certificate --proxy http://toonrips:xipTsP9H9s@103.171.51.246:50100 --dump-json {url} > info{ci}.json",shell=True)
 
     elif is_hs:
         url = f'"{url}"'
