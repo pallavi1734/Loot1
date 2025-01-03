@@ -101,7 +101,7 @@ class ButtonMaker:
         return InlineKeyboardMarkup(menu)
 
 
-def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False,is_hs=False,is_zee5=False):
+def extractyt(url=None,ci=None,is_dngplay=False,is_sliv=False,is_hs=False,is_zee5=False,is_dplus=False):
     try:
         os.remove(f"info{ci}.json")
     except Exception:
@@ -233,7 +233,16 @@ def downloadformat(ydl_opts,url,info):
         file_path = ydl.prepare_filename(info)
         return file_path
         
-    
+def decrypt_vod_mp4(kid, key, input_path, output_path):
+    # Create mp4decrypt command
+    mp4decPath = realPath(joinPath(scriptsDir, config.get('mp4decPath')))
+    command = ["mp4decrypt", '--key', f"{kid}:{key}", input_path, output_path]
+    process = subprocess.run(command, stderr=subprocess.PIPE, universal_newlines=True)
+    try:
+        process.wait()
+    except Exception:
+        pass
+    return "Done"
         
 def decrypt_vod_mp4d(kid, key, input_path, output_path):
     # Create mp4decrypt command
@@ -264,6 +273,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     rid_map = datajc['rid_map']
     has_drm = datajc['has_drm']
     is_hs = datajc['is_hs']
+    name = datajc['name']
     license_url = datajc['license_url']
     is_multi = datajc['is_multi']
     is_series = datajc['is_series']
@@ -498,8 +508,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                                             return
                                         try:
                                            # command = f'mp4decrypt --key "{kid}:{_data[kid]}" "{dcr[fr]}" "{dc[fr]}"'
-                                            command = ['mp4decrypt', '--key', f"{kid}:{_data[kid]}", dcr[fr], dc[fr]]
-                                            process = subprocess.run(command, stderr=subprocess.PIPE, universal_newlines=True)
+                                            di = decrypt_vod_mp4(kid, _data[kid], dcr[fr], dc[fr])
+                                            logging.info(di)
                                         except subprocess.CalledProcessError as e:
                                             logging.info(e)
                                         
@@ -1082,6 +1092,13 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         
     else:
         is_sliv=False
+    if(any(pattern in url for pattern in ["discoveryplus.in", "www.discoveryplus.in", "discovery", "https://www.discoveryplus.in"])):
+        is_dplus = True
+        mpd = requests.get(f"https://ottapi-fetcher-by-aryan-chaudhary.vercel.app/dplus?u={m}").json()['url']
+        url = mpd
+    else:
+        is_dplus = False
+    
         
     
 
@@ -1109,15 +1126,15 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                 print(url)
 
         
-    data = extractyt(url=url,ci=ci,is_dngplay=is_dngplay,is_sliv=is_sliv,is_hs=is_hs,is_zee5=is_zee5)
+    data = extractyt(url=url,ci=ci,is_dngplay=is_dngplay,is_sliv=is_sliv,is_hs=is_hs,is_zee5=is_zee5,is_dplus=is_dplus)
     if (is_sliv and datasliv["isencrypted"]) or (is_hs and check_drm_hs(datahs) or (is_zee5)):
         rid_map = {}
         for lang in data['formats']:
             frmtid = lang['format_id']
             rid_map[frmtid] = {'kid':kid, 'pssh':to_use_pssh}
-
+    extname=None
     if 2<3:
-        keys = {"rid_map":rid_map,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
+        keys = {"rid_map":rid_map,"name":extname,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
    
@@ -1229,6 +1246,7 @@ def download_button(_, callback_query):
  #           return
         with open(f"{user_id}.json",'r') as f:
             datajc = json.load(f)
+        name = datajc['name']
         rid_map = datajc['rid_map']
         has_drm = datajc['has_drm']
         is_hs = datajc['is_hs']
@@ -1250,7 +1268,7 @@ def download_button(_, callback_query):
 #        formatid = formatid[1:]
   #      formatid = '+'.join(unique_format_ids)
        # lang = f"{language}+{lang}".replace("None","").replace(" ","").replace("NONE","").replace("NONE+","").replace("++","")
-        keys = {"rid_map":rid_map,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
+        keys = {"rid_map":rid_map,"has_drm":has_drm,"name":name,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
         with open(f'info{ci}.json', 'r') as f:
@@ -1306,6 +1324,7 @@ def download_button(_, callback_query):
             datajc = json.load(f)
         rid_map = datajc['rid_map']
         has_drm = datajc['has_drm']
+        name = datajc['name']
         is_multi = datajc['is_multi']
         is_series = datajc['is_series']
         content_id = datajc['content_id']
@@ -1318,7 +1337,7 @@ def download_button(_, callback_query):
         print(formatid)
         lang = lang.upper()
         lang = f"{language}+{lang}".replace("None","").replace(" ","").replace("NONE","").replace("NONE+","").replace("++","")
-        keys = {"rid_map":rid_map,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
+        keys = {"rid_map":rid_map,"has_drm":has_drm,"name":name,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
         with open(f'info{ci}.json', 'r') as f:
@@ -1372,7 +1391,12 @@ def download_button(_, callback_query):
     
     
     
-    
+@app.on_message(filters.chat(sudo_users) & filters.command("dl"))
+def dplus(client, message):
+    m = message.text.split(" ")[-1]
+    user_id = message.from_user.id
+    hello = youtube_link(m, message, 1, user_id=user_id)
+    print(hello)
 
 
 @app.on_message(filters.chat(sudo_users) & filters.command("dl"))
