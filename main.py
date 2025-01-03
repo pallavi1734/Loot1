@@ -750,6 +750,8 @@ def download_playback(message, _content_id, _content_data, is_series=False, att=
             #download_vod_ytdlp(message, playback_data['url'], _content_data)
             hello = youtube_link(playback_data["url"], message, _content_id, is_series=is_series, att=att,is_multi=is_multi,user_id=user_id)
             print(hello)
+        else:
+            pass
     elif playback_data["streamtype"] == "hls" :
         hello = youtube_link(playback_data["url"], message, _content_id, is_series=is_series, att=att,is_multi=is_multi,user_id=user_id)
         print(hello)
