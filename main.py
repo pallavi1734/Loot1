@@ -745,7 +745,7 @@ def download_playback(message, _content_id, _content_data, is_series=False, att=
             hello = youtube_link(playback_data["url"], message, _content_id, is_series=is_series, att=att,is_multi=is_multi,has_drm=True, rid_map=rid_kid,user_id=user_id)
             print(hello)
             
-        else:
+        elif spjc:
             print("[!] Can't find PSSH, Content may be Encrypted")
             #download_vod_ytdlp(message, playback_data['url'], _content_data)
             hello = youtube_link(playback_data["url"], message, _content_id, is_series=is_series, att=att,is_multi=is_multi,user_id=user_id)
