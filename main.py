@@ -1391,7 +1391,7 @@ def download_button(_, callback_query):
     
     
     
-@app.on_message(filters.chat(sudo_users) & filters.command("dl"))
+@app.on_message(filters.chat(sudo_users) & filters.command("dplus"))
 def dplus(client, message):
     m = message.text.split(" ")[-1]
     user_id = message.from_user.id
