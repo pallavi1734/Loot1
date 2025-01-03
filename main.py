@@ -196,6 +196,11 @@ def fetch_widevine_keys(pssh_kid_map, content_playback, playback_data):
             pssh_cache[pssh] = requests.get(url='https://hls-proxifier-sage.vercel.app/jc',headers={"pyid":content_playback["playbackId"],"url":playback_data["licenseurl"],"pssh":pssh}).json()["keys"]
             config.set("psshCacheStore", pssh_cache)
 # Use mp4decrypt to decrypt vod(video on demand) using kid:key
+def downloaddash(name,key,frmts,url):
+    
+    cmd = f'/usr/src/app/spjc "{url}" {key} -o "{name}"'
+    hi = subprocess.run(cmd,shell=True)
+    return "done"
 def detector(ci,fr):
     with open(f"info{ci}.json","r") as file:
         
@@ -266,6 +271,7 @@ def merge_vod_ffmpeg(in_video, in_audio, output_path):
 def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_drm=False, rid_map=None,is_jc=True,spjc=False):
     global default_res
     import os
+    
     status = app.send_message(message.chat.id, f"[+] Downloading")
     ci = content_id
     with open(f"{user_id}.json",'r') as f:
@@ -274,6 +280,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     has_drm = datajc['has_drm']
     is_hs = datajc['is_hs']
     name = datajc['name']
+    spjc = datajc['spjc']
     license_url = datajc['license_url']
     is_multi = datajc['is_multi']
     is_series = datajc['is_series']
@@ -453,6 +460,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     
     ydl_opts['outtmpl'] = output_name
     frmts = formats.split("+")
+    frt = frmts[0]
     dcr = {}
     import logging
     if is_hs:
@@ -495,6 +503,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         if has_drm and fr in rid_map:
                                 _data = rid_map[fr]
                                 pssh = _data['pssh']
+                                
                                 kid = _data['kid'].lower()
 
                                 if pssh in pssh_cache:
@@ -539,9 +548,25 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                 up = uploader.upload_file(file_path)
       except Exception as e:
                 print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
-            
-      
-                                    
+    elif spjc:
+        keyt = ""
+        if has_drm and fr in rid_map:
+                                _data = rid_map[fr]
+                                pssh = _data['pssh']
+                                if pssh in pssh_cache:
+                                    _data = pssh_cache[pssh]
+        for f,g in _data.items():
+            keyt = keyt + f'--key "{f}:{g}" '
+        ch = downloaddash(ffout,keyt,frmts,url)
+        print(ch)
+        file_path = ffout
+        try:
+                from tg import tgUploader
+                uploader = tgUploader(app, ms, ms.chat.id)
+                up = uploader.upload_file(file_path)
+        except Exception as e:
+                print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
+        
     else:
       link = url
     
@@ -1262,6 +1287,7 @@ def download_button(_, callback_query):
         with open(f"{user_id}.json",'r') as f:
             datajc = json.load(f)
         name = datajc['name']
+        spjc = datajc['spjc']
         rid_map = datajc['rid_map']
         has_drm = datajc['has_drm']
         is_hs = datajc['is_hs']
@@ -1283,7 +1309,7 @@ def download_button(_, callback_query):
 #        formatid = formatid[1:]
   #      formatid = '+'.join(unique_format_ids)
        # lang = f"{language}+{lang}".replace("None","").replace(" ","").replace("NONE","").replace("NONE+","").replace("++","")
-        keys = {"rid_map":rid_map,"has_drm":has_drm,"name":name,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
+        keys = {"rid_map":rid_map,"has_drm":has_drm,"spjc":spjc,"name":name,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
         with open(f'info{ci}.json', 'r') as f:
@@ -1340,6 +1366,7 @@ def download_button(_, callback_query):
         rid_map = datajc['rid_map']
         has_drm = datajc['has_drm']
         name = datajc['name']
+        spjc = datajc['spjc']
         is_multi = datajc['is_multi']
         is_series = datajc['is_series']
         content_id = datajc['content_id']
@@ -1352,7 +1379,7 @@ def download_button(_, callback_query):
         print(formatid)
         lang = lang.upper()
         lang = f"{language}+{lang}".replace("None","").replace(" ","").replace("NONE","").replace("NONE+","").replace("++","")
-        keys = {"rid_map":rid_map,"has_drm":has_drm,"name":name,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
+        keys = {"rid_map":rid_map,"has_drm":has_drm,"spjc":spjc,"name":name,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
         with open(f'info{ci}.json', 'r') as f:
