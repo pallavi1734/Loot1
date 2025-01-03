@@ -260,10 +260,10 @@ def merge_vod_ffmpeg(in_video, in_audio, output_path):
     command = ["ffmpeg", '-hide_banner', '-i', in_video, '-i', in_audio, '-c:v', 'copy', '-c:a', 'copy', output_path]
     process = subprocess.run(command, stderr=subprocess.PIPE, universal_newlines=True)
     
-
+    
 
 # Use yt-dlp to download vod(video on demand) as m3u8 or dash streams into a video file
-def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_drm=False, rid_map=None,is_jc=True):
+def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_drm=False, rid_map=None,is_jc=True,spjc=False):
     global default_res
     import os
     status = app.send_message(message.chat.id, f"[+] Downloading")
@@ -409,6 +409,11 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         if is_jc:
             output_name = f'{content["fullTitle"]}-({content["releaseYear"]})'
             print("is_jc")
+        if(any(pattern in url for pattern in ["dplus"])):
+            is_dplus = True
+            ydl_opts['proxy'] = ""
+        else:
+            is_dplus = False
         print(f"[=>] Downloading ")
     
     
@@ -709,6 +714,7 @@ def download_playback(message, _content_id, _content_data, is_series=False, att=
         print(pssh_kid)
         print(rid_kid)
         if len(pssh_kid) > 0:
+            spjc=True
             pass
         else:
             
@@ -722,17 +728,23 @@ def download_playback(message, _content_id, _content_data, is_series=False, att=
             matches = re.findall(pattern, reso, re.DOTALL)
             rid_kid = {}
             for match in matches:
-                pssh_kid 
+                 
                 rid_kid[match[2]]={'kid': match[0], 'pssh': match[1]}
+            fetch_widevine_keys(pssh_kid, content_playback, playback_data)
+            spjc=False
+            hello = youtube_link(playback_data["url"], message, _content_id, is_series=is_series, att=att,is_multi=is_multi,has_drm=True, rid_map=rid_kid,user_id=user_id,spjc=True)
+            print(hello)
+            
       
         # Proceed for DRM keys only if PSSH is there
-        if len(pssh_kid) > 0:
+        if len(pssh_kid) > 0 and spjc:
             # Get the Decryption Keys into cache
             fetch_widevine_keys(pssh_kid, content_playback, playback_data)
 
             # Download Audio, Video streams
             hello = youtube_link(playback_data["url"], message, _content_id, is_series=is_series, att=att,is_multi=is_multi,has_drm=True, rid_map=rid_kid,user_id=user_id)
             print(hello)
+            
         else:
             print("[!] Can't find PSSH, Content may be Encrypted")
             #download_vod_ytdlp(message, playback_data['url'], _content_data)
@@ -831,8 +843,9 @@ def check_drm_hs(data):
         return False
     else:
         return True
-def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm=False,rid_map=None,user_id=0):
+def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm=False,rid_map=None,user_id=0,spjc=False):
     import json
+    
     
     if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
         is_dngplay=True 
@@ -1134,7 +1147,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             rid_map[frmtid] = {'kid':kid, 'pssh':to_use_pssh}
     extname=None
     if 2<3:
-        keys = {"rid_map":rid_map,"name":extname,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
+        keys = {"rid_map":rid_map,"name":extname,"spjc":spjc,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
    
