@@ -1094,7 +1094,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         is_sliv=False
     if(any(pattern in url for pattern in ["discoveryplus.in", "www.discoveryplus.in", "discovery", "https://www.discoveryplus.in"])):
         is_dplus = True
-        mpd = requests.get(f"https://ottapi-fetcher-by-aryan-chaudhary.vercel.app/dplus?u={m}").json()['url']
+        mpd = requests.get(f"https://ottapi-fetcher-by-aryan-chaudhary.vercel.app/dplus?u={url}").json()['url']
         url = mpd
     else:
         is_dplus = False
