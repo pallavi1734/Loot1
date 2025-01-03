@@ -550,9 +550,10 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                 print(f"UPLOADING failed Contact Developer @aryanchy451{e}")
     elif spjc:
         keyt = ""
-        if has_drm and fr in rid_map:
-                                _data = rid_map[fr]
+        if has_drm and frt in rid_map:
+                                _data = rid_map[frt]
                                 pssh = _data['pssh']
+                                pssh_cache = config.get("psshCacheStore")
                                 if pssh in pssh_cache:
                                     _data = pssh_cache[pssh]
         for f,g in _data.items():
