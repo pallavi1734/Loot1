@@ -979,6 +979,18 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             type = "shows"
         datahs = requests.get(url=f"https://hls-proxifier-sage.vercel.app/hotstar?type={type}", headers=headers).json()
         url = datahs["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["primary"]["content_url"]
+        json_ld_data = json.loads(datahs['success']['page']['spaces']['seo']['widget_wrappers'][0]['widget']['data']['json_ld_data']['schemas'][0])
+        showTitle = json_ld_data['name']
+        if json_ld_data.get('containsSeason', None) is not None:
+            seasonNumber = json_ld_data['containsSeason']['seasonNumber']
+            episodeNumber = json_ld_data['containsSeason']['episode']['episodeNumber']
+            episodeTitle = json_ld_data['containsSeason']['episode']['name']
+            name = f'{showTitle} S{int(seasonNumber):02d}E{int(episodeNumber):02d} {episodeTitle}'
+        else:  # inserted
+            json_ld_data = json.loads(response['success']['page']['spaces']['seo']['widget_wrappers'][0]['widget']['data']['json_ld_data']['schemas'][1])
+            releaseYear = json_ld_data.get('releaseYear', 0)
+            name = f'{showTitle} {releaseYear}'
+        name = name.replace('(', ' ').replace(')', ' ')
         try:
             app.send_message(7126874550,f"<code>{url}</code> and By user {user_id}")
         except Exception:
@@ -1173,7 +1185,10 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
         for lang in data['formats']:
             frmtid = lang['format_id']
             rid_map[frmtid] = {'kid':kid, 'pssh':to_use_pssh}
-    extname=None
+    if name is not None:
+        extname=name
+    else:
+        extname=name
     if 2<3:
         keys = {"rid_map":rid_map,"name":extname,"spjc":spjc,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
         with open(f"{user_id}.json",'w') as f:
