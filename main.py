@@ -386,7 +386,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     else:
         output_name = "OTT-DL-(BETA)"
         if is_hs:
-            output_name = "Hotstar.WebDl"
+            output_name = name
        #     ydl_opts['proxy'] = ""
          #   print("proxy Removed")
             
@@ -1188,7 +1188,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
     if name is not None:
         extname=name
     else:
-        extname=name
+        extname=None
     if 2<3:
         keys = {"rid_map":rid_map,"name":extname,"spjc":spjc,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
         with open(f"{user_id}.json",'w') as f:
