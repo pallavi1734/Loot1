@@ -864,7 +864,7 @@ def split_and_upload_video(file_name, message):
         os.remove(file_name)
 @app.on_message(Filters.command('start'))
 def start_command(client, message):
-    app.send_message(message.chat.id, 'Send a JioCinema link to download!')
+    app.send_message(message.chat.id, 'Send a Ott link to download!')
 #@app.on_message. 
 def check_drm_hs(data):
     if data["success"]["page"]["spaces"]["player"]["widget_wrappers"][0]["widget"]["data"]["player_config"]["media_asset"]["licence_urls"][0] == "":
@@ -873,6 +873,7 @@ def check_drm_hs(data):
         return True
 def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm=False,rid_map=None,user_id=0,spjc=False):
     import json
+    name = None
     
     
     if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
