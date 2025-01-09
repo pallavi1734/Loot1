@@ -1135,11 +1135,15 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                     
                 else:
                     fetch_keys = True
+                def getkid(test):
+                    for key,value in test.items():
+                        return key
         
                 if fetch_keys:
                     logging.info("fetching keys")
                     pssh_cache[pssh] = requests.get(url='https://hls-proxifier-sage.vercel.app/sliv',headers={"url":license_url,"pssh":pssh}).json()["keys"]
                     config.set("psshCacheStore", pssh_cache)
+                    kid = getkid(pssh_cache[pssh])
         else:
             license_url = None
         is_sliv=True 
