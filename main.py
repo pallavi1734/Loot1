@@ -1130,15 +1130,17 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
 
         # Need to fetch even if one key missing
                 fetch_keys = False
-                if pssh in pssh_cache:
-                    fetch_keys = False
-                    
-                else:
-                    fetch_keys = True
                 def getkid(test):
                     for key,value in test.items():
                         return key
         
+                if pssh in pssh_cache:
+                    fetch_keys = False
+                    kid = getkid(pssh_cache[pssh])
+                    
+                else:
+                    fetch_keys = True
+                
                 if fetch_keys:
                     logging.info("fetching keys")
                     pssh_cache[pssh] = requests.get(url='https://hls-proxifier-sage.vercel.app/sliv',headers={"url":license_url,"pssh":pssh}).json()["keys"]
