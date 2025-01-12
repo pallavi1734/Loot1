@@ -740,7 +740,7 @@ def download_playback(message, _content_id, _content_data, is_series=False, att=
         print(pssh_kid)
         print(rid_kid)
         if len(pssh_kid) > 0:
-            spjc=True
+            spjc=False
             pass
         else:
             
