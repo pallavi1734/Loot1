@@ -1025,12 +1025,13 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                 drm_info = {}
 
     # Find all AdaptationSet elements
-                if 'ContentProtection' in adaptation_set:
-                  for adaptation_set in mpd_dict['MPD']['Period']['AdaptationSet']:
+                
+                for adaptation_set in mpd_dict['MPD']['Period']['AdaptationSet']:
         # Find ContentProtection elements
                     kid = None
                     pssh = None
-                    for protection in adaptation_set['ContentProtection']:
+                    if 'ContentProtection' in adaptation_set:
+                      for protection in adaptation_set['ContentProtection']:
             # Check if this is a DRM protection with KID
                         if protection.get('@schemeIdUri') == 'urn:mpeg:dash:mp4protection:2011':
                             kid = protection.get('@cenc:default_KID')
@@ -1041,15 +1042,15 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                             pssh = protection.get('cenc:pssh')
 
         # Find all Representation elements
-                for representation in adaptation_set['Representation']:
+                    for representation in adaptation_set['Representation']:
             # Extract format ID (Representation ID)
-                    format_id = representation['@id'].replace('/','_')
+                        format_id = representation['@id'].replace('/','_')
 
             # Store the extracted information in the dictionary
-                    drm_info[format_id] = {
+                        drm_info[format_id] = {
                 'kid': kid,
                 'pssh': pssh
-                    }
+                        }
                 drm_info_json = json.dumps(drm_info, indent=4)
                 return drm_info_json, kid
 
