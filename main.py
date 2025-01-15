@@ -520,9 +520,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                                         else:
                                             return
                                         try:
-                                            command = f'cp {dcr[fr]} try{dc[fr]}'
-                                            logging.info(command)
-                                            subprocess.run(command,shell=True)
+                                            
                                             command = f'mp4decrypt --key {kid}:{_data[kid]} {dcr[fr]} {dc[fr]}'
                                             logging.info(command)
                                             subprocess.run(command,shell=True)
@@ -535,8 +533,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                                     except Exception as e:
                                         logging.info(e)
                                     try:
-                                      pass
-                                    #  os.remove(res)
+                                      
+                                      os.remove(dcr[fr])
                                     except Exception:
                                       logging.info("not found")
       try:
