@@ -1043,9 +1043,9 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
 
         # Find all Representation elements
                     if adaptation_set.get('@contentType') in ['video/mp4', 'audio/mp4']:
-                    for representation in adaptation_set['Representation']:
+                      for representation in adaptation_set['Representation']:
             # Extract format ID (Representation ID)
-                        format_id = representation['@id'].replace('/','_')
+                        format_id = str(representation['@id']).replace('/','_')
 
             # Store the extracted information in the dictionary
                         drm_info[format_id] = {
