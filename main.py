@@ -471,7 +471,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     frt = frmts[0]
     dcr = {}
     import logging
-    if is_hs and not has_drm:
+    if is_hs and has_drm:
       for fr in frmts:
         ydl_opts['postprocessors'] = []
         ydl_opts['fixup'] = 'never'
