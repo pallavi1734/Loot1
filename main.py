@@ -1010,7 +1010,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             import xmltodict
             logging.info(r.content)
             import re
-            import xmltodict
+            
             import json
 
             def extract_drm_info(manifest_path):
@@ -1019,6 +1019,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
 
     # Parse the XML string into a Python dictionary
                 mpd_dict = xmltodict.parse(xml_string)
+                logging.info(mpd_dict)
                 
     
                 drm_info = {}
