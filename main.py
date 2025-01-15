@@ -507,8 +507,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                                 if pssh in pssh_cache:
                                     _data = pssh_cache[pssh]
                                     logging.info(f'{kid}:{_data[kid]}')
-                                    dc[fr] = f'{dc[fr]}'
-                                    dcr[fr] = f'{dcr[fr]}'
+                                    
                                     logging.info('Decrypting Content')
                                     status.edit(f"[+]<code> Decrypting </code> With Keys Please Wait {dcr[fr]}")
                                     try:
@@ -519,9 +518,14 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                                         else:
                                             return
                                         try:
-                                           # command = f'mp4decrypt --key "{kid}:{_data[kid]}" "{dcr[fr]}" "{dc[fr]}"'
-                                            di = decrypt_vod_mp4(kid, _data[kid], dcr[fr], dc[fr])
-                                            logging.info(di)
+                                            command = f'cp {dcr[fr]} try{dc[fr]}'
+                                            logging.info(command)
+                                            subprocess.run(command,shell=True)
+                                            command = f'mp4decrypt --key {kid}:{_data[kid]} {dcr[fr]} {dc[fr]}'
+                                            logging.info(command)
+                                            subprocess.run(command,shell=True)
+                                        #    di = decrypt_vod_mp4(kid, _data[kid], dcr[fr], dc[fr])
+                                          #  logging.info(di)
                                         except subprocess.CalledProcessError as e:
                                             logging.info(e)
                                         
@@ -535,8 +539,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
                                       logging.info("not found")
       try:
           logging.info("Merging")
-       #   rd = mergeall(file_downloaded,ffout)
-         # print(rd)
+          rd = mergeall(file_downloaded,ffout)
+          print(rd)
       except Exception as e:
             logging.info(f"error in ffmpeg {e}")
       file_path = ffout
