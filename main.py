@@ -1038,7 +1038,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                         if kid:
                             kid = kid.replace('-', '')
             # Check if this is a DRM protection with PSSH
-                        elif protection.get('@schemeIdUri') == 'urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed':
+                        if protection.get('@schemeIdUri') == 'urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed':
                             pssh = protection.get('cenc:pssh')
 
         # Find all Representation elements
@@ -1052,11 +1052,12 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                 'kid': kid,
                 'pssh': pssh
                         }
-                drm_info_json = json.dumps(drm_info, indent=4)
+                drm_info_json = json.dumps(drm_info, indent=4).replace('    ', '').replace('\\', '').replace('\n', '')
                 return drm_info_json, kid
 
 
             rid_map, kid= extract_drm_info(r.text)
+            
             def extract_unique_pssh_and_kid(text):
                 
                 pattern = rb"<cenc:pssh>(.*?)</cenc:pssh>"
