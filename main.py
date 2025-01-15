@@ -272,7 +272,7 @@ def merge_vod_ffmpeg(in_video, in_audio, output_path):
     
 
 # Use yt-dlp to download vod(video on demand) as m3u8 or dash streams into a video file
-def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_drm=False, rid_map=None,is_jc=True,spjc=False):
+def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_drm=False, rid_map=None,is_jc=True,spjc=False,is_zee5=None):
     global default_res
     import os
     
@@ -284,6 +284,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     has_drm = datajc['has_drm']
     is_hs = datajc['is_hs']
     name = datajc['name']
+    is_zee5 = datajc['is_zee5']
     spjc = datajc['spjc']
     license_url = datajc['license_url']
     is_multi = datajc['is_multi']
@@ -407,8 +408,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         else:
             is_sliv=False
 
-        if(any(pattern in url for pattern in ["ZEE5"])):
-            output_name = "Zee5DL"
+        if is_zee5:
+            output_name = name
         if(any(pattern in url for pattern in ["dangalplay.com", "www.dangalplay.com", "dangalplay", "https://www.dangalplay.com"])):
             
             ydl_opts['username']='token'
@@ -902,10 +903,12 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                 showid = url.split('/')[-3]
                 ctnid = url.split('/')[-1]
                 datazee5 = requests.get(f"https://zee5-olive.vercel.app/zee5?id={ctnid}&type=EPISODE&show={showid}").json()
+                tile = datazee5.get('title')
                 nl = datazee5['nl']
                 customdata = datazee5['customdata']
                 mpd = datazee5['mpd']
                 url = mpd
+                name = tile
             is_zee5 = True
             headersy = {
                       "Origin": "https://www.zee5.com",
@@ -1241,7 +1244,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
     else:
         extname=None
     if 2<3:
-        keys = {"rid_map":rid_map,"name":extname,"spjc":spjc,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
+        keys = {"rid_map":rid_map,"is_zee5":is_zee5,"name":extname,"spjc":spjc,"has_drm":has_drm,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url,"formats": "None", "language":"None"}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
    
@@ -1355,6 +1358,7 @@ def download_button(_, callback_query):
             datajc = json.load(f)
         name = datajc['name']
         spjc = datajc['spjc']
+        is_zee5 = datajc['is_zee5']
         rid_map = datajc['rid_map']
         has_drm = datajc['has_drm']
         is_hs = datajc['is_hs']
@@ -1376,7 +1380,7 @@ def download_button(_, callback_query):
 #        formatid = formatid[1:]
   #      formatid = '+'.join(unique_format_ids)
        # lang = f"{language}+{lang}".replace("None","").replace(" ","").replace("NONE","").replace("NONE+","").replace("++","")
-        keys = {"rid_map":rid_map,"has_drm":has_drm,"spjc":spjc,"name":name,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
+        keys = {"rid_map":rid_map,"is_zee5":is_zee5,"has_drm":has_drm,"spjc":spjc,"name":name,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
         with open(f'info{ci}.json', 'r') as f:
@@ -1433,8 +1437,10 @@ def download_button(_, callback_query):
         rid_map = datajc['rid_map']
         has_drm = datajc['has_drm']
         name = datajc['name']
+        is_zee5 = datajc['is_zee5']
         spjc = datajc['spjc']
         is_multi = datajc['is_multi']
+        is_zee5 = datajc['is_zee5']
         is_series = datajc['is_series']
         content_id = datajc['content_id']
         url = datajc['url']
@@ -1446,7 +1452,7 @@ def download_button(_, callback_query):
         print(formatid)
         lang = lang.upper()
         lang = f"{language}+{lang}".replace("None","").replace(" ","").replace("NONE","").replace("NONE+","").replace("++","")
-        keys = {"rid_map":rid_map,"has_drm":has_drm,"spjc":spjc,"name":name,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
+        keys = {"rid_map":rid_map,"has_drm":has_drm,"is_zee5":is_zee5,"spjc":spjc,"name":name,"license_url":license_url,"is_hs":is_hs,"is_multi":is_multi,"is_series":is_series,"content_id":ci,"url":url, "formats": formatid , "language":lang}
         with open(f"{user_id}.json",'w') as f:
             json.dump(keys,f)
         with open(f'info{ci}.json', 'r') as f:
