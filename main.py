@@ -1049,10 +1049,10 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
 
             # Store the extracted information in the dictionary
                         drm_info[format_id] = {
-                'kid': kid,
-                'pssh': pssh
+                "kid": kid,
+                "pssh": pssh
                         }
-                drm_info_json = json.dumps(drm_info, indent=4).replace('    ', '').replace('\\', '').replace('\n', '')
+                drm_info_json = drm_info      #replace('    ', '').replace('\\', '').replace('\n', '')
                 return drm_info_json, kid
 
 
