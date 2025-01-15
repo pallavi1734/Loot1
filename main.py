@@ -437,7 +437,10 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     except Exception:
         pass
     output_name += f'.{language}'
-    output_name += '.WEB-DL-JC'
+    if is_hs:
+        output_name += 'Hotstar.WEB-DL'
+    else:
+        output_name += '.WEB-DL-JC'
     output_name += ".@aryanchy451"
     
 
