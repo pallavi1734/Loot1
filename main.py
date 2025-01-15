@@ -1025,7 +1025,8 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                 drm_info = {}
 
     # Find all AdaptationSet elements
-                for adaptation_set in mpd_dict['MPD']['Period']['AdaptationSet']:
+                if 'ContentProtection' in adaptation_set:
+                  for adaptation_set in mpd_dict['MPD']['Period']['AdaptationSet']:
         # Find ContentProtection elements
                     kid = None
                     pssh = None
