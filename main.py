@@ -1010,8 +1010,6 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             import xmltodict
             logging.info(r.content)
             import re
-            
-                                                                                                             test.py
             import xmltodict
             import json
 
@@ -1051,10 +1049,10 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                 'pssh': pssh
                     }
                 drm_info_json = json.dumps(drm_info, indent=4)
-                return drm_info_json
+                return drm_info_json, kid
 
 
-            rid_map = extract_drm_info(r.text)
+            rid_map, kid= extract_drm_info(r.text)
             def extract_unique_pssh_and_kid(text):
                 
                 pattern = rb"<cenc:pssh>(.*?)</cenc:pssh>"
