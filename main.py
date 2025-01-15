@@ -213,6 +213,7 @@ def detector(ci,fr):
                 else:
                     return 2
 def mergeall(files,outpath):
+    
     cmd = f'ffmpeg -y '
     
     for i, audio in enumerate(files):
@@ -450,7 +451,7 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     
     output = f"{output_name}"
     ffout = output + '.mkv'
-    ffout = f'{ffout}'
+    ffout = f'{ffout}'.replace(':','-')
     file_downloaded = []
     dc = {}
     output_name += '.%(ext)s'
