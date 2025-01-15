@@ -1011,15 +1011,50 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             logging.info(r.content)
             import re
             
-            def kidr(text):
-                pattern = rb'cenc:default_KID="(.*?)"/>'
-                matches = re.findall(pattern, text)
-                if matches:
-                    print("kid fetch")
-                    smaller_pssh = min(matches, key=len)
-                    return smaller_pssh.strip().decode()
+                                                                                                             test.py
+            import xmltodict
+            import json
 
-            kid = kidr(r.content)
+            def extract_drm_info(manifest_path):
+      
+                xml_string = manifest_path
+
+    # Parse the XML string into a Python dictionary
+                mpd_dict = xmltodict.parse(xml_string)
+                
+    
+                drm_info = {}
+
+    # Find all AdaptationSet elements
+                for adaptation_set in mpd_dict['MPD']['Period']['AdaptationSet']:
+        # Find ContentProtection elements
+                    kid = None
+                    pssh = None
+                    for protection in adaptation_set['ContentProtection']:
+            # Check if this is a DRM protection with KID
+                        if protection.get('@schemeIdUri') == 'urn:mpeg:dash:mp4protection:2011':
+                            kid = protection.get('@cenc:default_KID')
+                        if kid:
+                            kid = kid.replace('-', '')
+            # Check if this is a DRM protection with PSSH
+                        elif protection.get('@schemeIdUri') == 'urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed':
+                            pssh = protection.get('cenc:pssh')
+
+        # Find all Representation elements
+                for representation in adaptation_set['Representation']:
+            # Extract format ID (Representation ID)
+                    format_id = representation['@id'].replace('/','_')
+
+            # Store the extracted information in the dictionary
+                    drm_info[format_id] = {
+                'kid': kid,
+                'pssh': pssh
+                    }
+                drm_info_json = json.dumps(drm_info, indent=4)
+                return drm_info_json
+
+
+            rid_map = extract_drm_info(r.text)
             def extract_unique_pssh_and_kid(text):
                 
                 pattern = rb"<cenc:pssh>(.*?)</cenc:pssh>"
@@ -1044,16 +1079,13 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
             if pssh:
                 
                 logging.info("pssh found hotstar")
-                def getkid(test):
-                    for key,value in test.items():
-                        return key
-        
+                
 
         # Need to fetch even if one key missing
                 fetch_keys = False
                 if pssh in pssh_cache:
-                    kid = getkid(pssh_cache[pssh])
-                    fetch_keys = False
+                    
+                    fetch_keys = True
                     
                 else:
                     fetch_keys = True
@@ -1062,7 +1094,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                     logging.info("fetching keys")
                     pssh_cache[pssh] = requests.get(url='https://hls-proxifier-sage.vercel.app/hs',headers={"url":license_url,"pssh":pssh}).json()["keys"]
                     config.set("psshCacheStore", pssh_cache)
-                    kid = getkid(pssh_cache[pssh])
+                    
         else:
             license_url = None
     else:
@@ -1185,7 +1217,7 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
 
         
     data = extractyt(url=url,ci=ci,is_dngplay=is_dngplay,is_sliv=is_sliv,is_hs=is_hs,is_zee5=is_zee5,is_dplus=is_dplus)
-    if (is_sliv and datasliv["isencrypted"]) or (is_hs and check_drm_hs(datahs) or (is_zee5)):
+    if (is_sliv and datasliv["isencrypted"]) or (is_zee5)):
         rid_map = {}
         for lang in data['formats']:
             frmtid = lang['format_id']
