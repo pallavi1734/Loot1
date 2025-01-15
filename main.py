@@ -1034,18 +1034,18 @@ def youtube_link(url, message, ci, is_series=False, att=0,is_multi=False,has_drm
                       for protection in adaptation_set['ContentProtection']:
             # Check if this is a DRM protection with KID
                         if protection.get('@schemeIdUri') == 'urn:mpeg:dash:mp4protection:2011':
-                            kid = protection.get('@cenc:default_KID')
+                            kid = protection.get('@cenc:default_KID').strip('"')
                         if kid:
                             kid = kid.replace('-', '')
             # Check if this is a DRM protection with PSSH
                         if protection.get('@schemeIdUri') == 'urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed':
-                            pssh = protection.get('cenc:pssh')
+                            pssh = protection.get('cenc:pssh').strip('"')
 
         # Find all Representation elements
                     if adaptation_set.get('@mimeType') in ['video/mp4', 'audio/mp4']:
                       for representation in adaptation_set['Representation']:
             # Extract format ID (Representation ID)
-                        format_id = str(representation['@id']).replace('/','_')
+                        format_id = str(representation['@id']).replace('/','_').strip('"')
 
             # Store the extracted information in the dictionary
                         drm_info[format_id] = {
