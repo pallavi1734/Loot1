@@ -450,9 +450,9 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     
     output_name += '.x264'
     
-    output = f"{output_name}".replace(' ', '_')
+    output = f"{output_name}".replace(' ', '_').replace(' : ', ' - ').replace(': ', ' - ').replace(':', ' - ').replace('&', 'and').replace('+', '').replace(';', '').replace('ÃƒÂ³', 'o').replace('[', '').replace('\'', '').replace(']', '').replace('/', '-').replace('//', '').replace('’', '\'').replace('*', 'x').replace('<', '').replace('>', '').replace('|', '').replace('~', '').replace('#', '').replace('%', '').replace('{', '')
     ffout = output + '.mkv'
-    ffout = f'{ffout}'.replace(':','-').replace(' ', '_')
+    ffout = f'{ffout}'.replace(':','-').replace(' ', '_').replace(' : ', ' - ').replace(': ', ' - ').replace(':', ' - ').replace('&', 'and').replace('+', '').replace(';', '').replace('ÃƒÂ³', 'o').replace('[', '').replace('\'', '').replace(']', '').replace('/', '-').replace('//', '').replace('’', '\'').replace('*', 'x').replace('<', '').replace('>', '').replace('|', '').replace('~', '').replace('#', '').replace('%', '').replace('{', '')
     file_downloaded = []
     dc = {}
     output_name += '.%(ext)s'
