@@ -438,7 +438,10 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
         output_name += f'.{content_info["height"]}p'
     except Exception:
         pass
-    output_name += f'.{language}'
+    try:
+        output_name += f'.{language}'
+    except Exception:
+        output_name += f'.Hin'
     if is_hs:
         output_name += '-Hotstar.WEB-DL'
     else:
