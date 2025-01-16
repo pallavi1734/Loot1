@@ -450,9 +450,9 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     
     output_name += '.x264'
     
-    output = f"{output_name}"
+    output = f"{output_name}".replace(' ', '_')
     ffout = output + '.mkv'
-    ffout = f'{ffout}'.replace(':','-')
+    ffout = f'{ffout}'.replace(':','-').replace(' ', '_')
     file_downloaded = []
     dc = {}
     output_name += '.%(ext)s'
