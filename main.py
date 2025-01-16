@@ -466,7 +466,8 @@ def download_vod_ytdlp(url, message, content_id, user_id, is_multi=False, has_dr
     print(output)
     print(output_name)
     
-    ydl_opts['outtmpl'] = output_name
+    ydl_opts['outtmpl'] = output_name.replace(':','-').replace(' ', '_').replace(' : ', ' - ').replace(': ', ' - ').replace(':', ' - ').replace('&', 'and').replace('+', '').replace(';', '').replace('ÃƒÂ³', 'o').replace('[', '').replace('\'', '').replace(']', '').replace('/', '-').replace('//', '').replace('’', '\'').replace('*', 'x').replace('<', '').replace('>', '').replace('|', '').replace('~', '').replace('#', '').replace('%', '').replace('{', '')
+    
     frmts = formats.split("+")
     frt = frmts[0]
     dcr = {}
