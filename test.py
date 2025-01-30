@@ -8,7 +8,7 @@ API_HASH = "a0da2f0c10923e1c080fd86ab4c04051"
 
 app = Client(
     "jiocinemaripbot",
-    bot_token="7331346379:AAHSW5pMPihQi2fZZVhxDesIooQAz2hncHs",
+    bot_token="8161075854:AAHokYb2TBhFUtwAopdER4RmHaZTLeG2TQs",
     api_id="28983177",
     api_hash="a0da2f0c10923e1c080fd86ab4c04051",
     sleep_threshold=30
