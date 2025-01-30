@@ -3,14 +3,14 @@ import m3u8
 import requests
 
 # Replace with your actual Pyrogram API credentials
-API_ID = "YOUR_API_ID"
-API_HASH = "YOUR_API_HASH"
+API_ID = "28983177"
+API_HASH = "a0da2f0c10923e1c080fd86ab4c04051"
 
 app = Client(
     "jiocinemaripbot",
-    bot_token="7574472282:AAEJ_T_pE6ZXnVZnxSIrW75XVvvYoSZU0FU",
-    api_id="5360874",
-    api_hash="4631f40a1b26c2759bf1be4aff1df710",
+    bot_token="7331346379:AAHSW5pMPihQi2fZZVhxDesIooQAz2hncHs",
+    api_id="28983177",
+    api_hash="a0da2f0c10923e1c080fd86ab4c04051",
     sleep_threshold=30
 )
 
