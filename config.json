@@ -3,9 +3,9 @@
     "hasPremium": false,
     "authToken": "",
     "accountName": "Guest",
-    "ytdlpPath": "/data/data/com.termux/files/usr/bin/yt-dlp",
+    "ytdlpPath": "/workspace/spring-petclinic/Loot11/yt-dlp",
     "ffmpegPath": "/data/data/com.termux/files/usr/bin/ffmpeg",
-    "mp4decPath": "/data/data/com.termux/files/usr/bin/mp4decrypt",
+    "mp4decPath": "/workspace/spring-petclinic/Loot11/mp4decrypt",
     "tempPath": "./downloads/temp",
     "downloadPath": "./downloads/{}/{}",
     "psshCacheStore": {}
